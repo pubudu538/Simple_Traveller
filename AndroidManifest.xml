@@ -7,7 +7,7 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
-    
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
@@ -20,27 +20,41 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
-       
-    
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        
-        <meta-data android:name="com.google.android.maps.v2.API_KEY"
-    android:value="AIzaSyCIOA6YsFZ9NB8jGOaqNevY8KdpY_upZF8"/>
-        
-        
-        
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCIOA6YsFZ9NB8jGOaqNevY8KdpY_upZF8" />
+
         <activity
             android:name="com.pubci.simple_traveller.MainActivity"
-            android:label="Main Menu" >
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.pubci.simple_traveller.MAINACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.pubci.simple_traveller.Splash"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.pubci.simple_traveller.AddTrip"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.pubci.simple_traveller.ADDTRIP" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
     </application>
