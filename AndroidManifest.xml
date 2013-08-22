@@ -57,6 +57,21 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.pubci.simple_traveller.SqlView"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.pubci.simple_traveller.SQLVIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        
+        <activity
+            android:name="com.pubci.simple_traveller.STDatabase"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

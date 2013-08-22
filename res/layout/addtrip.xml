@@ -5,11 +5,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/addtripheading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -159,6 +159,22 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp" >
+
+            <Button
+                android:id="@+id/saveB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="150dp"
+                android:text="Save Data"
+                android:textColor="@android:color/holo_red_light" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp" >
 
@@ -167,21 +183,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
-                android:text="Add Places" />
+                android:text="Add Places"
+                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/manualB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Manually"
-                android:textColor="@android:color/holo_red_light" />
+                android:textColor="@android:color/holo_red_light"
+                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/GpsB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Using GPS"
-                android:textColor="@android:color/holo_red_light" />
+                android:textColor="@android:color/holo_red_light"
+                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 
