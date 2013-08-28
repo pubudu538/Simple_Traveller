@@ -179,15 +179,16 @@ containing a value of this type.
         public static final int common_signin_btn_text_normal_light=0x7f020015;
         public static final int common_signin_btn_text_pressed_dark=0x7f020016;
         public static final int common_signin_btn_text_pressed_light=0x7f020017;
-        public static final int ic_launcher=0x7f020018;
-        public static final int image_1=0x7f020019;
-        public static final int image_2=0x7f02001a;
-        public static final int search=0x7f02001b;
+        public static final int downarrow=0x7f020018;
+        public static final int ic_launcher=0x7f020019;
+        public static final int image_1=0x7f02001a;
+        public static final int image_2=0x7f02001b;
+        public static final int search=0x7f02001c;
     }
     public static final class id {
-        public static final int GpsB=0x7f05001d;
-        public static final int action_settings=0x7f050024;
-        public static final int addplacesTV=0x7f05001b;
+        public static final int GpsB=0x7f05001f;
+        public static final int action_settings=0x7f050028;
+        public static final int addplacesTV=0x7f05001d;
         public static final int addtripB=0x7f050005;
         public static final int addtripTV=0x7f050006;
         public static final int addtripheading=0x7f05000d;
@@ -195,6 +196,8 @@ containing a value of this type.
         public static final int dateofthetripTV=0x7f050012;
         public static final int daysspendET=0x7f050015;
         public static final int daysspendTV=0x7f050014;
+        public static final int downIV1=0x7f05001a;
+        public static final int downIV2=0x7f05001c;
         public static final int exitB=0x7f05000b;
         public static final int exitTV=0x7f05000c;
         public static final int expendiitureTV=0x7f050018;
@@ -202,26 +205,28 @@ containing a value of this type.
         public static final int hybrid=0x7f050004;
         public static final int mainlocationET=0x7f050011;
         public static final int mainlocationTV=0x7f050010;
-        public static final int manualB=0x7f05001c;
-        public static final int map=0x7f05001f;
+        public static final int manualB=0x7f05001e;
+        public static final int map=0x7f050023;
         public static final int mytripsB=0x7f050009;
         public static final int mytripsTV=0x7f05000a;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
         public static final int satellite=0x7f050002;
-        public static final int saveB=0x7f05001a;
+        public static final int saveB=0x7f05001b;
+        public static final int searchET=0x7f050021;
+        public static final int searchLocationB=0x7f050022;
         public static final int searchtripB=0x7f050007;
         public static final int searchtripTV=0x7f050008;
-        public static final int tableRow1=0x7f050020;
+        public static final int tableRow1=0x7f050024;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f050021;
-        public static final int textView2=0x7f050022;
+        public static final int textView1=0x7f050025;
+        public static final int textView2=0x7f050026;
         public static final int titleET=0x7f05000f;
         public static final int titleTV=0x7f05000e;
+        public static final int topLayout=0x7f050020;
         public static final int travellingET=0x7f050017;
         public static final int travellingTV=0x7f050016;
-        public static final int tv=0x7f05001e;
-        public static final int tvSQLInfo=0x7f050023;
+        public static final int tvSQLInfo=0x7f050027;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

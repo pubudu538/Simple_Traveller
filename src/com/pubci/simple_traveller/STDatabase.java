@@ -3,6 +3,7 @@ package com.pubci.simple_traveller;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -10,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class STDatabase {
 
+	public static final String KEY_ROWID = "_id";
 	public static final String KEY_TITLE = "title";
 	public static final String KEY_LOCATION = "mainLocation";
 	public static final String KEY_DATE = "date";
@@ -38,11 +40,12 @@ public class STDatabase {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 
-			db.execSQL("CREATE TABLE " + DATABASE_TABLE_TRIP + " (" + KEY_TITLE
-					+ " TEXT PRIMARY KEY NOT NULL, " + KEY_LOCATION
-					+ " TEXT NOT NULL, " + KEY_DATE + " TEXT NOT NULL, "
-					+ KEY_DAYS + " TEXT NOT NULL, " + KEY_TRAVELBY
-					+ " TEXT NOT NULL, " + KEY_EXPENDITURE + " TEXT NOT NULL);");
+			db.execSQL("CREATE TABLE " + DATABASE_TABLE_TRIP + " (" + KEY_ROWID
+					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TITLE
+					+ " TEXT NOT NULL, " + KEY_LOCATION + " TEXT NOT NULL, "
+					+ KEY_DATE + " TEXT NOT NULL, " + KEY_DAYS
+					+ " TEXT NOT NULL, " + KEY_TRAVELBY + " TEXT NOT NULL, "
+					+ KEY_EXPENDITURE + " TEXT NOT NULL);");
 
 		}
 
@@ -81,19 +84,21 @@ public class STDatabase {
 		cv.put(KEY_DAYS, days);
 		cv.put(KEY_TRAVELBY, travel);
 		cv.put(KEY_EXPENDITURE, expenditure);
+
 		return ourDatabase.insert(DATABASE_TABLE_TRIP, null, cv);
 
 	}
 
-	public String getDataofTrips() {
+	public String getDataofTrips() throws SQLException {
 
-		String[] columns = new String[] { KEY_TITLE, KEY_LOCATION, KEY_DATE,
-				KEY_DAYS, KEY_TRAVELBY, KEY_EXPENDITURE };
+		String[] columns = new String[] { KEY_ROWID, KEY_TITLE, KEY_LOCATION,
+				KEY_DATE, KEY_DAYS, KEY_TRAVELBY, KEY_EXPENDITURE };
 
 		Cursor c = ourDatabase.query(DATABASE_TABLE_TRIP, columns, null, null,
 				null, null, null);
 		String result = "";
 
+		int iRowId = c.getColumnIndex(KEY_ROWID);
 		int iTitle = c.getColumnIndex(KEY_TITLE);
 		int iLocation = c.getColumnIndex(KEY_LOCATION);
 		int iDate = c.getColumnIndex(KEY_DATE);
@@ -102,10 +107,10 @@ public class STDatabase {
 		int iExpenditure = c.getColumnIndex(KEY_EXPENDITURE);
 
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-			result = result + c.getString(iTitle) + " "
-					+ c.getString(iLocation) + " " + c.getString(iDate) + " "
-					+ c.getString(iDays) + " " + c.getString(iTravel) + " "
-					+ c.getString(iExpenditure) + "\n";
+			result = result + c.getString(iRowId) + " " + c.getString(iTitle)
+					+ " " + c.getString(iLocation) + " " + c.getString(iDate)
+					+ " " + c.getString(iDays) + " " + c.getString(iTravel)
+					+ " " + c.getString(iExpenditure) + "\n";
 		}
 
 		return result;
@@ -113,21 +118,40 @@ public class STDatabase {
 
 	public boolean checkTitleAvailability(String s) {
 
-		String[] columns = new String[] { KEY_TITLE, KEY_LOCATION, KEY_DATE,
-				KEY_DAYS, KEY_TRAVELBY, KEY_EXPENDITURE };
+		String[] columns = new String[] { KEY_ROWID, KEY_TITLE, KEY_LOCATION,
+				KEY_DATE, KEY_DAYS, KEY_TRAVELBY, KEY_EXPENDITURE };
+
 		Cursor c = ourDatabase.query(DATABASE_TABLE_TRIP, columns, KEY_TITLE
 				+ "=" + s, null, null, null, null);
-		
-		c.moveToLast();
-		int count=c.getCount();
-		
-		if(count==0)
-		{
-			return false;
+
+		if (c != null) {
+
+			return true;
 		}
-		
-		return true;
-		
+
+		return false;
+
+	}
+
+	public void updateEntry(String title, String location, String date,
+			String days, String travel, String expenditure) throws SQLException {
+
+		Cursor c = ourDatabase.rawQuery("SELECT * FROM " + DATABASE_TABLE_TRIP,
+				null);
+		c.moveToLast();
+
+		int rows = Integer.parseInt(c.getString(0));
+
+		ContentValues cvUpdate = new ContentValues();
+		cvUpdate.put(KEY_TITLE, title);
+		cvUpdate.put(KEY_LOCATION, location);
+		cvUpdate.put(KEY_DATE, date);
+		cvUpdate.put(KEY_DAYS, days);
+		cvUpdate.put(KEY_TRAVELBY, travel);
+		cvUpdate.put(KEY_EXPENDITURE, expenditure);
+		ourDatabase.update(DATABASE_TABLE_TRIP, cvUpdate, KEY_ROWID + "="
+				+ rows, null);
+
 	}
 
 }

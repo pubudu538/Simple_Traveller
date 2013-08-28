@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AddTrip extends Activity implements OnClickListener {
@@ -17,6 +18,7 @@ public class AddTrip extends Activity implements OnClickListener {
 			totalExpTV, addPlacesTV;
 	EditText titleET, locationET, dateET, daysET, travelbyET, totalExpET;
 	Button saveUpdateB, manualB, GpsB;
+	ImageView down1, down2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,8 @@ public class AddTrip extends Activity implements OnClickListener {
 		saveUpdateB = (Button) findViewById(R.id.saveB);
 		manualB = (Button) findViewById(R.id.manualB);
 		GpsB = (Button) findViewById(R.id.GpsB);
-
+		down1 = (ImageView) findViewById(R.id.downIV1);
+		down2 = (ImageView) findViewById(R.id.downIV2);
 	}
 
 	@Override
@@ -94,27 +97,13 @@ public class AddTrip extends Activity implements OnClickListener {
 				d.setContentView(tv);
 				d.show();
 
-			} else if (checkAvailability(title) == true
-					&& saveUpdateB.getText().equals("Save Data") == true) {
+			} else if (saveUpdateB.getText().equals("Save Data") == true) {
 
-				Dialog d = new Dialog(this);
-				d.setTitle("Title Already Exists!");
-				TextView tv = new TextView(this);
-				tv.setText(" Please enter a different Title ");
-				d.setContentView(tv);
-				d.show();
-
-			} else {
-
-				if (saveUpdateB.getText().equals("Save Data")) {
-
-					saveUpdateB.setText("Update Data");
-					manualB.setVisibility(View.VISIBLE);
-					GpsB.setVisibility(View.VISIBLE);
-					addPlacesTV.setVisibility(View.VISIBLE);
-					// titleET.setFocusable(false);
-
-				}
+				saveUpdateB.setText("Update Data");
+				manualB.setVisibility(View.VISIBLE);
+				GpsB.setVisibility(View.VISIBLE);
+				addPlacesTV.setVisibility(View.VISIBLE);
+				// titleET.setFocusable(false);
 
 				boolean didwork = true;
 
@@ -125,8 +114,6 @@ public class AddTrip extends Activity implements OnClickListener {
 					String days = daysET.getText().toString();
 					String travel = travelbyET.getText().toString();
 					String expenditure = totalExpET.getText().toString();
-
-					System.out.println("new value - " + travel);
 
 					STDatabase entry = new STDatabase(AddTrip.this);
 					entry.open();
@@ -148,23 +135,67 @@ public class AddTrip extends Activity implements OnClickListener {
 						Dialog d = new Dialog(this);
 						d.setTitle("Trip Route Successfully Added!");
 						TextView tv = new TextView(this);
-						tv.setText(" Now You can add places to the Map manually or using GPS "
-								+ checkAvailability(title));
+						tv.setText(" Now You can add places to the Map manually or using GPS ");
+						d.setContentView(tv);
+						d.show();
+						down1.setVisibility(View.VISIBLE);
+						down2.setVisibility(View.VISIBLE);
+					}
+				}
+
+			} else if (saveUpdateB.getText().equals("Update Data") == true) {
+
+				boolean didWork = true;
+
+				try {
+
+					String location = locationET.getText().toString();
+					String date = dateET.getText().toString();
+					String days = daysET.getText().toString();
+					String travel = travelbyET.getText().toString();
+					String expenditure = totalExpET.getText().toString();
+
+					STDatabase updateEntry = new STDatabase(this);
+					updateEntry.open();
+					updateEntry.updateEntry(title, location, date, days,
+							travel, expenditure);
+					updateEntry.close();
+
+				} catch (Exception e) {
+					// TODO: handle exception
+					didWork = false;
+					String error = e.toString();
+					Dialog d = new Dialog(this);
+					d.setTitle("Dang It");
+					TextView tv = new TextView(this);
+					tv.setText(error);
+					d.setContentView(tv);
+					d.show();
+				} finally {
+					if (didWork) {
+						Dialog d = new Dialog(this);
+						d.setTitle("Data Successfully Updated!");
+						TextView tv = new TextView(this);
+						tv.setText(" Now You can add places to the Map manually or using GPS ");
 						d.setContentView(tv);
 						d.show();
 					}
 				}
 
 			}
+
 			break;
 		case R.id.manualB:
 
-			Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
-			startActivity(i);
+			Intent manual = new Intent("com.pubci.simple_traveller.MAP_ACTIVITY_MANUAL");
+			startActivity(manual);
 
 			break;
 
 		case R.id.GpsB:
+			
+			Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
+			startActivity(i);
 
 			break;
 
@@ -173,19 +204,26 @@ public class AddTrip extends Activity implements OnClickListener {
 
 	private boolean checkAvailability(String title) {
 
-		boolean titleAvailable = false;
+		boolean titleAvailable = true;
 
-		try {
+		// try {
 
-			STDatabase db = new STDatabase(this);
-			db.open();
-			titleAvailable = db.checkTitleAvailability(title);
-			db.close();
+		STDatabase db = new STDatabase(AddTrip.this);
+		db.open();
+		titleAvailable = db.checkTitleAvailability(title);
+		db.close();
 
-		} catch (Exception e) {
-			// TODO: handle exception
+		// } catch (Exception e) {
+		// TODO: handle exception
+		// didwork = false;
+		// Dialog d = new Dialog(this);
+		// d.setTitle("ERRORS");
+		// TextView tv = new TextView(this);
+		// tv.setText(" err");
+		// d.setContentView(tv);
+		// d.show();
 
-		}
+		// }
 
 		return titleAvailable;
 

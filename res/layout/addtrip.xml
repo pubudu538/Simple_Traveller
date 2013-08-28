@@ -163,6 +163,14 @@
             android:orientation="horizontal"
             android:padding="10dp" >
 
+            <ImageView
+                android:id="@+id/downIV1"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.75"
+                android:src="@drawable/downarrow"
+                android:visibility="invisible" />
+
             <Button
                 android:id="@+id/saveB"
                 android:layout_width="wrap_content"
@@ -170,6 +178,14 @@
                 android:minWidth="150dp"
                 android:text="Save Data"
                 android:textColor="@android:color/holo_red_light" />
+
+            <ImageView
+                android:id="@+id/downIV2"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.75"
+                android:src="@drawable/downarrow"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <LinearLayout
@@ -192,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:text="Manually"
                 android:textColor="@android:color/holo_red_light"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
             <Button
                 android:id="@+id/GpsB"
