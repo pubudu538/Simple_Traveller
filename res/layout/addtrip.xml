@@ -208,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:text="Manually"
                 android:textColor="@android:color/holo_red_light"
-                android:visibility="visible" />
+                android:visibility="invisible" />
 
             <Button
                 android:id="@+id/GpsB"

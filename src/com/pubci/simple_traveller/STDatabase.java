@@ -11,18 +11,28 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class STDatabase {
 
-	public static final String KEY_ROWID = "_id";
-	public static final String KEY_TITLE = "title";
-	public static final String KEY_LOCATION = "mainLocation";
-	public static final String KEY_DATE = "date";
-	public static final String KEY_DAYS = "days";
-	public static final String KEY_TRAVELBY = "travellingBy";
-	public static final String KEY_EXPENDITURE = "expenditure";
+	// attributes of Trip_Data table
+	public static final String KEY_T_ROWID = "_id";
+	public static final String KEY_T_TITLE = "title";
+	public static final String KEY_T_LOCATION = "mainLocation";
+	public static final String KEY_T_DATE = "date";
+	public static final String KEY_T_DAYS = "days";
+	public static final String KEY_T_TRAVELBY = "travellingBy";
+	public static final String KEY_T_EXPENDITURE = "expenditure";
+
+	// attributes of Places_Data table
+	public static final String KEY_P_ROWID = "_id";
+	public static final String KEY_P_TRIP_ID = "trip_id";
+	public static final String KEY_P_TITLE = "title";
+	public static final String KEY_P_DESCRIPTION = "description";
+	public static final String KEY_P_TYPE = "type";
+	public static final String KEY_P_LATITUDE = "latitude";
+	public static final String KEY_P_LONGITUDE = "longitude";
 
 	private static final String DATABASE_NAME = "Simple_TravellerDB";
 	private static final String DATABASE_TABLE_TRIP = "Trip_Data";
 	private static final String DATABASE_TABLE_PLACES = "Places_Data";
-	private static final String DATABASE_TABLE_TRIP_PLACES_DATA = "Trip_Places_Data";
+
 	private static final int DATABASE_VERSION = 1;
 
 	private DbHelper ourHelper;
@@ -40,12 +50,21 @@ public class STDatabase {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 
-			db.execSQL("CREATE TABLE " + DATABASE_TABLE_TRIP + " (" + KEY_ROWID
-					+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TITLE
-					+ " TEXT NOT NULL, " + KEY_LOCATION + " TEXT NOT NULL, "
-					+ KEY_DATE + " TEXT NOT NULL, " + KEY_DAYS
-					+ " TEXT NOT NULL, " + KEY_TRAVELBY + " TEXT NOT NULL, "
-					+ KEY_EXPENDITURE + " TEXT NOT NULL);");
+			db.execSQL("CREATE TABLE " + DATABASE_TABLE_TRIP + " ("
+					+ KEY_T_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ KEY_T_TITLE + " TEXT NOT NULL, " + KEY_T_LOCATION
+					+ " TEXT NOT NULL, " + KEY_T_DATE + " TEXT NOT NULL, "
+					+ KEY_T_DAYS + " TEXT NOT NULL, " + KEY_T_TRAVELBY
+					+ " TEXT NOT NULL, " + KEY_T_EXPENDITURE
+					+ " TEXT NOT NULL);");
+
+			db.execSQL("CREATE TABLE " + DATABASE_TABLE_PLACES + " ("
+					+ KEY_P_ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+					+ KEY_P_TRIP_ID + " INTEGER NOT NULL, " + KEY_P_TITLE
+					+ " TEXT NOT NULL, " + KEY_P_DESCRIPTION
+					+ " TEXT NOT NULL, " + KEY_P_TYPE + " INTEGER NOT NULL, "
+					+ KEY_P_LATITUDE + " TEXT NOT NULL, " + KEY_P_LONGITUDE
+					+ " TEXT NOT NULL);");
 
 		}
 
@@ -54,6 +73,7 @@ public class STDatabase {
 			// TODO Auto-generated method stub
 
 			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_TRIP);
+			db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE_PLACES);
 			onCreate(db);
 		}
 
@@ -74,37 +94,53 @@ public class STDatabase {
 		ourHelper.close();
 	}
 
-	public long createEntry(String title, String location, String date,
+	public long createEntryTripData(String title, String location, String date,
 			String days, String travel, String expenditure) {
 
 		ContentValues cv = new ContentValues();
-		cv.put(KEY_TITLE, title);
-		cv.put(KEY_LOCATION, location);
-		cv.put(KEY_DATE, date);
-		cv.put(KEY_DAYS, days);
-		cv.put(KEY_TRAVELBY, travel);
-		cv.put(KEY_EXPENDITURE, expenditure);
+		cv.put(KEY_T_TITLE, title);
+		cv.put(KEY_T_LOCATION, location);
+		cv.put(KEY_T_DATE, date);
+		cv.put(KEY_T_DAYS, days);
+		cv.put(KEY_T_TRAVELBY, travel);
+		cv.put(KEY_T_EXPENDITURE, expenditure);
 
 		return ourDatabase.insert(DATABASE_TABLE_TRIP, null, cv);
 
 	}
 
+	public long createEntryPlaces(int tripId, String title, String description,
+			int type, String latitude, String longitude) {
+
+		ContentValues cv = new ContentValues();
+		cv.put(KEY_P_TRIP_ID, tripId);
+		cv.put(KEY_P_TITLE, title);
+		cv.put(KEY_P_DESCRIPTION, description);
+		cv.put(KEY_P_TYPE, type);
+		cv.put(KEY_P_LATITUDE, latitude);
+		cv.put(KEY_P_LONGITUDE, longitude);
+
+		return ourDatabase.insert(DATABASE_TABLE_PLACES, null, cv);
+
+	}
+
 	public String getDataofTrips() throws SQLException {
 
-		String[] columns = new String[] { KEY_ROWID, KEY_TITLE, KEY_LOCATION,
-				KEY_DATE, KEY_DAYS, KEY_TRAVELBY, KEY_EXPENDITURE };
+		String[] columns = new String[] { KEY_T_ROWID, KEY_T_TITLE,
+				KEY_T_LOCATION, KEY_T_DATE, KEY_T_DAYS, KEY_T_TRAVELBY,
+				KEY_T_EXPENDITURE };
 
 		Cursor c = ourDatabase.query(DATABASE_TABLE_TRIP, columns, null, null,
 				null, null, null);
 		String result = "";
 
-		int iRowId = c.getColumnIndex(KEY_ROWID);
-		int iTitle = c.getColumnIndex(KEY_TITLE);
-		int iLocation = c.getColumnIndex(KEY_LOCATION);
-		int iDate = c.getColumnIndex(KEY_DATE);
-		int iDays = c.getColumnIndex(KEY_DAYS);
-		int iTravel = c.getColumnIndex(KEY_TRAVELBY);
-		int iExpenditure = c.getColumnIndex(KEY_EXPENDITURE);
+		int iRowId = c.getColumnIndex(KEY_T_ROWID);
+		int iTitle = c.getColumnIndex(KEY_T_TITLE);
+		int iLocation = c.getColumnIndex(KEY_T_LOCATION);
+		int iDate = c.getColumnIndex(KEY_T_DATE);
+		int iDays = c.getColumnIndex(KEY_T_DAYS);
+		int iTravel = c.getColumnIndex(KEY_T_TRAVELBY);
+		int iExpenditure = c.getColumnIndex(KEY_T_EXPENDITURE);
 
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 			result = result + c.getString(iRowId) + " " + c.getString(iTitle)
@@ -116,12 +152,42 @@ public class STDatabase {
 		return result;
 	}
 
+	public String getDataofPlaces() throws SQLException {
+
+		String[] columns = new String[] { KEY_P_ROWID, KEY_P_TRIP_ID,
+				KEY_P_TITLE, KEY_P_DESCRIPTION, KEY_P_TYPE, KEY_P_LATITUDE,
+				KEY_P_LONGITUDE };
+
+		Cursor c = ourDatabase.query(DATABASE_TABLE_PLACES, columns, null, null,
+				null, null, null);
+		String result = "";
+
+		int iRowId = c.getColumnIndex(KEY_P_ROWID);
+		int iTripId = c.getColumnIndex(KEY_P_TRIP_ID);
+		int iTitle = c.getColumnIndex(KEY_P_TITLE);
+		int iDescription = c.getColumnIndex(KEY_P_DESCRIPTION);
+		int iType = c.getColumnIndex(KEY_P_TYPE);
+		int iLatitude = c.getColumnIndex(KEY_P_LATITUDE);
+		int iLongitude = c.getColumnIndex(KEY_P_LONGITUDE);
+		
+
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+			result = result + c.getString(iRowId) + " " + c.getString(iTripId)
+					+ " " + c.getString(iTitle) + " " + c.getString(iDescription)
+					+ " " + c.getString(iType) + " " + c.getString(iLatitude)
+					+ " " + c.getString(iLongitude) + "\n";
+		}
+
+		return result;
+	}
+
 	public boolean checkTitleAvailability(String s) {
 
-		String[] columns = new String[] { KEY_ROWID, KEY_TITLE, KEY_LOCATION,
-				KEY_DATE, KEY_DAYS, KEY_TRAVELBY, KEY_EXPENDITURE };
+		String[] columns = new String[] { KEY_T_ROWID, KEY_T_TITLE,
+				KEY_T_LOCATION, KEY_T_DATE, KEY_T_DAYS, KEY_T_TRAVELBY,
+				KEY_T_EXPENDITURE };
 
-		Cursor c = ourDatabase.query(DATABASE_TABLE_TRIP, columns, KEY_TITLE
+		Cursor c = ourDatabase.query(DATABASE_TABLE_TRIP, columns, KEY_T_TITLE
 				+ "=" + s, null, null, null, null);
 
 		if (c != null) {
@@ -133,7 +199,7 @@ public class STDatabase {
 
 	}
 
-	public void updateEntry(String title, String location, String date,
+	public void updateEntryTripData(String title, String location, String date,
 			String days, String travel, String expenditure) throws SQLException {
 
 		Cursor c = ourDatabase.rawQuery("SELECT * FROM " + DATABASE_TABLE_TRIP,
@@ -143,15 +209,26 @@ public class STDatabase {
 		int rows = Integer.parseInt(c.getString(0));
 
 		ContentValues cvUpdate = new ContentValues();
-		cvUpdate.put(KEY_TITLE, title);
-		cvUpdate.put(KEY_LOCATION, location);
-		cvUpdate.put(KEY_DATE, date);
-		cvUpdate.put(KEY_DAYS, days);
-		cvUpdate.put(KEY_TRAVELBY, travel);
-		cvUpdate.put(KEY_EXPENDITURE, expenditure);
-		ourDatabase.update(DATABASE_TABLE_TRIP, cvUpdate, KEY_ROWID + "="
+		cvUpdate.put(KEY_T_TITLE, title);
+		cvUpdate.put(KEY_T_LOCATION, location);
+		cvUpdate.put(KEY_T_DATE, date);
+		cvUpdate.put(KEY_T_DAYS, days);
+		cvUpdate.put(KEY_T_TRAVELBY, travel);
+		cvUpdate.put(KEY_T_EXPENDITURE, expenditure);
+		ourDatabase.update(DATABASE_TABLE_TRIP, cvUpdate, KEY_T_ROWID + "="
 				+ rows, null);
 
+	}
+	
+	public int getTripId()
+	{
+		Cursor c = ourDatabase.rawQuery("SELECT * FROM " + DATABASE_TABLE_TRIP,
+				null);
+		c.moveToLast();
+
+		int rows = Integer.parseInt(c.getString(0));
+		
+		return rows;
 	}
 
 }

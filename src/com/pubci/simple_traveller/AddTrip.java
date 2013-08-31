@@ -22,7 +22,7 @@ public class AddTrip extends Activity implements OnClickListener {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addtrip);
 		initialize();
@@ -103,7 +103,6 @@ public class AddTrip extends Activity implements OnClickListener {
 				manualB.setVisibility(View.VISIBLE);
 				GpsB.setVisibility(View.VISIBLE);
 				addPlacesTV.setVisibility(View.VISIBLE);
-				// titleET.setFocusable(false);
 
 				boolean didwork = true;
 
@@ -117,8 +116,8 @@ public class AddTrip extends Activity implements OnClickListener {
 
 					STDatabase entry = new STDatabase(AddTrip.this);
 					entry.open();
-					entry.createEntry(title, location, date, days, travel,
-							expenditure);
+					entry.createEntryTripData(title, location, date, days,
+							travel, expenditure);
 					entry.close();
 				} catch (Exception e) {
 
@@ -133,7 +132,7 @@ public class AddTrip extends Activity implements OnClickListener {
 				} finally {
 					if (didwork) {
 						Dialog d = new Dialog(this);
-						d.setTitle("Trip Route Successfully Added!");
+						d.setTitle("Trip Route Added!");
 						TextView tv = new TextView(this);
 						tv.setText(" Now You can add places to the Map manually or using GPS ");
 						d.setContentView(tv);
@@ -157,12 +156,12 @@ public class AddTrip extends Activity implements OnClickListener {
 
 					STDatabase updateEntry = new STDatabase(this);
 					updateEntry.open();
-					updateEntry.updateEntry(title, location, date, days,
-							travel, expenditure);
+					updateEntry.updateEntryTripData(title, location, date,
+							days, travel, expenditure);
 					updateEntry.close();
 
 				} catch (Exception e) {
-					// TODO: handle exception
+
 					didWork = false;
 					String error = e.toString();
 					Dialog d = new Dialog(this);
@@ -187,13 +186,17 @@ public class AddTrip extends Activity implements OnClickListener {
 			break;
 		case R.id.manualB:
 
-			Intent manual = new Intent("com.pubci.simple_traveller.MAP_ACTIVITY_MANUAL");
+			int tripId = getTripId();
+			Bundle backpack = new Bundle();
+			backpack.putInt("trip", tripId);
+			Intent manual = new Intent(AddTrip.this, Map_Activity_Manual.class);
+			manual.putExtras(backpack);
 			startActivity(manual);
 
 			break;
 
 		case R.id.GpsB:
-			
+
 			Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
 			startActivity(i);
 
@@ -202,31 +205,21 @@ public class AddTrip extends Activity implements OnClickListener {
 		}
 	}
 
-	private boolean checkAvailability(String title) {
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		finish();
+	}
 
-		boolean titleAvailable = true;
-
-		// try {
+	private int getTripId() {
 
 		STDatabase db = new STDatabase(AddTrip.this);
 		db.open();
-		titleAvailable = db.checkTitleAvailability(title);
+		int id = db.getTripId();
 		db.close();
 
-		// } catch (Exception e) {
-		// TODO: handle exception
-		// didwork = false;
-		// Dialog d = new Dialog(this);
-		// d.setTitle("ERRORS");
-		// TextView tv = new TextView(this);
-		// tv.setText(" err");
-		// d.setContentView(tv);
-		// d.show();
-
-		// }
-
-		return titleAvailable;
-
+		return id;
 	}
 
 }
