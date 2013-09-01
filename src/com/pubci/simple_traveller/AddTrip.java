@@ -187,34 +187,18 @@ public class AddTrip extends Activity implements OnClickListener {
 		case R.id.manualB:
 
 			int tripId = getTripId();
-			Bundle backpacktrip = new Bundle();
-			Bundle backpacktype = new Bundle();
-			backpacktrip.putInt("trip", tripId); // adding trip_id to the intent
-			backpacktype.putInt("type", 0); // adding type of the map
-
+			Bundle backpack = new Bundle();
+			backpack.putInt("trip", tripId);
 			Intent manual = new Intent(AddTrip.this, Map_Activity_Manual.class);
-			manual.putExtras(backpacktrip);
-			manual.putExtras(backpacktype);
+			manual.putExtras(backpack);
 			startActivity(manual);
 
 			break;
 
 		case R.id.GpsB:
 
-			int tripId_gps = getTripId();
-			Bundle packtrip = new Bundle();
-			Bundle packtype = new Bundle();
-			packtrip.putInt("trip", tripId_gps); // adding trip_id to the intent
-			packtype.putInt("type", 1); // adding type of the map
-
-			Intent gps = new Intent(AddTrip.this, Map_Activity_Manual.class);
-			gps.putExtras(packtrip);
-			gps.putExtras(packtype);
-			startActivity(gps);
-
-			
-			// Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
-			// startActivity(i);
+			Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
+			startActivity(i);
 
 			break;
 

@@ -193,7 +193,6 @@ containing a value of this type.
     public static final class id {
         public static final int GpsB=0x7f05001f;
         public static final int action_settings=0x7f050032;
-        public static final int addLocationB=0x7f05002c;
         public static final int addplacesTV=0x7f05001d;
         public static final int addtripB=0x7f050005;
         public static final int addtripTV=0x7f050006;
@@ -226,6 +225,8 @@ containing a value of this type.
         public static final int normal=0x7f050001;
         public static final int satellite=0x7f050002;
         public static final int saveB=0x7f05001b;
+        public static final int searchET=0x7f05002b;
+        public static final int searchLocationB=0x7f05002c;
         public static final int searchtripB=0x7f050007;
         public static final int searchtripTV=0x7f050008;
         public static final int stayingRB=0x7f050027;
@@ -234,7 +235,6 @@ containing a value of this type.
         public static final int textView1=0x7f05002f;
         public static final int textView2=0x7f050030;
         public static final int titleET=0x7f05000f;
-        public static final int titleMapTV=0x7f05002b;
         public static final int titleTV=0x7f05000e;
         public static final int toiletRB=0x7f050029;
         public static final int topLayout=0x7f05002a;

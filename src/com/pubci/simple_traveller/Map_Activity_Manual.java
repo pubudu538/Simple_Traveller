@@ -1,18 +1,29 @@
 package com.pubci.simple_traveller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,21 +42,21 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class Map_Activity_Manual extends FragmentActivity implements
-		OnClickListener, OnMapLongClickListener, LocationListener {
+		OnClickListener, OnMapLongClickListener {
 
 	private GoogleMap mMap;
 	private int trip_id;
-	private int mapType;
 
-	Button addLocation;
-	TextView titleMapTV;
+	Button search;
 	EditText searchtext;
 	final Context context = this;
 	ArrayList<Marker> markerList = new ArrayList<Marker>();
 	Marker marker;
-	LocationManager locationManager;
+
+	// private static final LatLng SRILANKA = new LatLng(7, 81);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +79,10 @@ public class Map_Activity_Manual extends FragmentActivity implements
 			checkConnection();
 			setCurrentLocation();
 			mMap.setOnMapLongClickListener(this);
-			addLocation.setOnClickListener(this);
-
+	
+			
 		}
-		
-	}
-
-	public void GPSSetting() {
-
+		// search.setOnClickListener(this);
 	}
 
 	private void checkConnection() {
@@ -86,31 +93,13 @@ public class Map_Activity_Manual extends FragmentActivity implements
 				getApplicationContext());
 		haveInternet = cont.isConnectingToInternet();
 
-		if (mapType == 1) {
-			boolean isGPS = locationManager
-					.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-			if (isGPS == false) {
-
-				Dialog d = new Dialog(this);
-				d.setTitle("GPS is Unavailable");
-				TextView tv = new TextView(this);
-				tv.setText("Please turn on GPS to proceed!");
-				d.setContentView(tv);
-				d.show();
-
-			}
-
-		} else {
-
-			if (haveInternet == false) {
-				Dialog d = new Dialog(this);
-				d.setTitle("Internet Connection Unavailable");
-				TextView tv = new TextView(this);
-				tv.setText("Please turn on your Internet Connection to proceed!");
-				d.setContentView(tv);
-				d.show();
-			}
+		if (haveInternet == false) {
+			Dialog d = new Dialog(this);
+			d.setTitle("Internet Connection Unavailable");
+			TextView tv = new TextView(this);
+			tv.setText("Please turn on your Internet Connection to proceed!");
+			d.setContentView(tv);
+			d.show();
 		}
 
 	}
@@ -118,8 +107,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	private void setCurrentLocation() {
 
 		// Getting LocationManager object from System Service LOCATION_SERVICE
-		// locationManager = (LocationManager)
-		// getSystemService(LOCATION_SERVICE);
+		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
 		// Creating a criteria object to retrieve provider
 		Criteria criteria = new Criteria();
@@ -136,33 +124,33 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 	}
 
+	private void onLocationChanged(Location location) {
+
+		double latitude = location.getLatitude();
+		double longitude = location.getLongitude();
+
+		// Creating a LatLng object for the current location
+		LatLng latLng = new LatLng(latitude, longitude);
+
+		// Showing the current location in Google Map
+		mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+		// Zoom in the Google Map
+		mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+	}
+
 	private void initialize() {
 
 		mMap = ((SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
+		search = (Button) findViewById(R.id.searchLocationB);
+		searchtext = (EditText) findViewById(R.id.searchET);
 
 		mMap.setMyLocationEnabled(true); // enable my location layer on the map
 
 		Bundle gotBasket = getIntent().getExtras();
 		trip_id = gotBasket.getInt("trip");
-
-		Bundle gotBaskettype = getIntent().getExtras();
-		mapType = gotBaskettype.getInt("type");
-		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		Typeface font = Typeface.createFromAsset(getAssets(),
-				"fonts/saloonf.ttf");
-		titleMapTV = (TextView) findViewById(R.id.titleMapTV);
-		titleMapTV.setTypeface(font);
-		addLocation = (Button) findViewById(R.id.addLocationB);
-		addLocation.setTypeface(font);
-
-		if (mapType == 1) {
-			addLocation.setVisibility(View.VISIBLE);
-			titleMapTV.setText("    Using GPS ");
-
-		} else {
-			titleMapTV.setText("    Add Locations Manually!");
-		}
 
 	}
 
@@ -171,12 +159,75 @@ public class Map_Activity_Manual extends FragmentActivity implements
 		// TODO Auto-generated method stub
 
 		switch (v.getId()) {
-		case R.id.addLocationB:
-			
-			Location locat=mMap.getMyLocation();
-			LatLng locationPoint=new LatLng(locat.getLatitude(),locat.getLongitude());
-			
-			onMapLongClick(locationPoint);
+		case R.id.searchLocationB:
+
+			// Geocoder gc = new Geocoder(this);
+			//
+			// try {
+			// List<Address> addresses = gc.getFromLocationName(
+			// searchtext.toString(), 5);
+			//
+			// if (addresses.size() > 0) {
+			//
+			// LatLng point = new LatLng(0, 0);
+			// // mMap.addMarker(new MarkerOptions().position(point).icon(
+			// // BitmapDescriptorFactory
+			// // .fromResource(R.drawable.ic_launcher)));
+			//
+			// CameraUpdate update = CameraUpdateFactory.newLatLngZoom(
+			// point, 14);
+			// mMap.animateCamera(update);
+			//
+			// // CameraUpdate update =
+			// // CameraUpdateFactory.newLatLng(LOCATION_BURNABY);
+			// // map.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+			// // CameraUpdate update =
+			// // CameraUpdateFactory.newLatLngZoom(LOCATION_BURNABY, 9);
+			// // map.animateCamera(update);
+			// //
+			//
+			// }
+			//
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			//
+			// // mMap.addMarker(new MarkerOptions().position(point).icon(
+			// // BitmapDescriptorFactory
+			// // .fromResource(R.drawable.ic_launcher)));
+			//
+			// // List<Address> addresses =
+			// //
+			// geoCoder.getFromLocationName(txtsearch.getText().toString(),5);
+			// //
+			// // if(addresses.size() > 0)
+			// // {
+			// // p = new GeoPoint( (int) (addresses.get(0).getLatitude() *
+			// 1E6),
+			// // (int) (addresses.get(0).getLongitude() * 1E6));
+			// //
+			// // controller.animateTo(p);
+			// // controller.setZoom(12);
+			// //
+			// // MapOverlay mapOverlay = new MapOverlay();
+			// // List<Overlay> listOfOverlays = map.getOverlays();
+			// // listOfOverlays.clear();
+			// // listOfOverlays.add(mapOverlay);
+			// //
+			// // map.invalidate();
+			// // txtsearch.setText("");
+			// // }
+			// // else
+			// // {
+			// // AlertDialog.Builder adb = new
+			// // AlertDialog.Builder(GoogleMap.this);
+			// // adb.setTitle("Google Map");
+			// // adb.setMessage("Please Provide the Proper Place");
+			// // adb.setPositiveButton("Close",null);
+			// // adb.show();
+			// // }
+
 			break;
 		}
 	}
@@ -289,39 +340,12 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 		}
 	}
-
-	@Override
-	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
-		double latitude = location.getLatitude();
-		double longitude = location.getLongitude();
-
-		// Creating a LatLng object for the current location
-		LatLng latLng = new LatLng(latitude, longitude);
-
-		// Showing the current location in Google Map
-		mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-
-		// Zoom in the Google Map
-		mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-	}
-
-	@Override
-	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
-
-	}
+	
+	
+	//*********************************************************************
+	
+	//******************************************************************
+	
+	
 
 }
