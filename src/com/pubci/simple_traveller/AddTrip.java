@@ -19,6 +19,9 @@ public class AddTrip extends Activity implements OnClickListener {
 	EditText titleET, locationET, dateET, daysET, travelbyET, totalExpET;
 	Button saveUpdateB, manualB, GpsB;
 	ImageView down1, down2;
+	boolean myTripsOn = false;
+	String tripStatus;
+	int tripID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +30,13 @@ public class AddTrip extends Activity implements OnClickListener {
 		setContentView(R.layout.addtrip);
 		initialize();
 		setFont();
+
 		saveUpdateB.setOnClickListener(this);
 		manualB.setOnClickListener(this);
 		GpsB.setOnClickListener(this);
 	}
 
+	// setting the custom fonts
 	private void setFont() {
 
 		Typeface font = Typeface.createFromAsset(getAssets(),
@@ -56,6 +61,7 @@ public class AddTrip extends Activity implements OnClickListener {
 
 	}
 
+	// Basic initialization
 	private void initialize() {
 
 		addtripHeadingTV = (TextView) findViewById(R.id.addtripheading);
@@ -79,6 +85,50 @@ public class AddTrip extends Activity implements OnClickListener {
 		GpsB = (Button) findViewById(R.id.GpsB);
 		down1 = (ImageView) findViewById(R.id.downIV1);
 		down2 = (ImageView) findViewById(R.id.downIV2);
+
+		Bundle gotBasket = getIntent().getExtras();
+		tripStatus = gotBasket.getString("mytrips");
+
+		if (tripStatus.equals("mytripsstatusoff") == false) {
+			myTripsOn = true;
+			myTripSetting();
+		}
+	}
+
+	private void myTripSetting() {
+		// TODO Auto-generated method stub
+
+		addtripHeadingTV.setText("Trip Route");
+		titleET.setText(tripStatus);
+		tripID = getTripId(tripStatus);
+		String[] data = getTripRouteData(tripID);
+
+		locationET.setText(data[1]);
+		dateET.setText(data[2]);
+		daysET.setText(data[3]);
+		travelbyET.setText(data[4]);
+		totalExpET.setText(data[5]);
+
+		setFocus(false);
+
+		manualB.setVisibility(View.VISIBLE);
+		GpsB.setVisibility(View.VISIBLE);
+		addPlacesTV.setVisibility(View.VISIBLE);
+		down1.setVisibility(View.VISIBLE);
+		down2.setVisibility(View.VISIBLE);
+
+		saveUpdateB.setText("Edit Data");
+
+	}
+
+	private String[] getTripRouteData(int number) {
+
+		STDatabase db = new STDatabase(AddTrip.this);
+		db.open();
+		String[] str = db.getTripInfoByID(number);
+		db.close();
+
+		return str;
 	}
 
 	@Override
@@ -89,7 +139,7 @@ public class AddTrip extends Activity implements OnClickListener {
 
 			String title = titleET.getText().toString();
 
-			if (title.equals("")) {
+			if (title.equals("")) { // checks for valid title
 				Dialog d = new Dialog(this);
 				d.setTitle("Invalid Title!");
 				TextView tv = new TextView(this);
@@ -97,6 +147,7 @@ public class AddTrip extends Activity implements OnClickListener {
 				d.setContentView(tv);
 				d.show();
 
+				// Saving data for the first time
 			} else if (saveUpdateB.getText().equals("Save Data") == true) {
 
 				saveUpdateB.setText("Update Data");
@@ -106,6 +157,7 @@ public class AddTrip extends Activity implements OnClickListener {
 
 				boolean didwork = true;
 
+				// Inserting data to the database
 				try {
 
 					String location = locationET.getText().toString();
@@ -130,7 +182,7 @@ public class AddTrip extends Activity implements OnClickListener {
 					d.show();
 
 				} finally {
-					if (didwork) {
+					if (didwork) { // message will pop-up if data is added
 						Dialog d = new Dialog(this);
 						d.setTitle("Trip Route Added!");
 						TextView tv = new TextView(this);
@@ -139,13 +191,18 @@ public class AddTrip extends Activity implements OnClickListener {
 						d.show();
 						down1.setVisibility(View.VISIBLE);
 						down2.setVisibility(View.VISIBLE);
+						tripID = getTripId(title);
+
 					}
 				}
 
-			} else if (saveUpdateB.getText().equals("Update Data") == true) {
+			} else if (saveUpdateB.getText().equals("Update Data") == true) { // update
+																				// the
+																				// data
 
 				boolean didWork = true;
 
+				// access the database to update the previously stored data
 				try {
 
 					String location = locationET.getText().toString();
@@ -156,9 +213,14 @@ public class AddTrip extends Activity implements OnClickListener {
 
 					STDatabase updateEntry = new STDatabase(this);
 					updateEntry.open();
-					updateEntry.updateEntryTripData(title, location, date,
-							days, travel, expenditure);
+					updateEntry.updateEntryTripData(tripID, title, location,
+							date, days, travel, expenditure);
 					updateEntry.close();
+
+					if (myTripsOn == true) {
+						saveUpdateB.setText("Edit Data");
+						setFocus(false);
+					}
 
 				} catch (Exception e) {
 
@@ -171,68 +233,100 @@ public class AddTrip extends Activity implements OnClickListener {
 					d.setContentView(tv);
 					d.show();
 				} finally {
-					if (didWork) {
+					if (didWork) { // message will pop-up if data is updated
 						Dialog d = new Dialog(this);
 						d.setTitle("Data Successfully Updated!");
 						TextView tv = new TextView(this);
 						tv.setText(" Now You can add places to the Map manually or using GPS ");
 						d.setContentView(tv);
 						d.show();
+
 					}
 				}
 
-			}
+			} else if (saveUpdateB.getText().equals("Edit Data") == true) {
 
+				setFocus(true);
+				saveUpdateB.setText("Update Data");
+
+			}
 			break;
+
 		case R.id.manualB:
 
-			int tripId = getTripId();
+			int tripIdforPass = tripID; // get trip_id from the database
 			Bundle backpacktrip = new Bundle();
 			Bundle backpacktype = new Bundle();
-			backpacktrip.putInt("trip", tripId); // adding trip_id to the intent
-			backpacktype.putInt("type", 0); // adding type of the map
+			backpacktrip.putInt("trip", tripIdforPass); // adding trip_id to the
+														// bundle, store places
+														// with trip_id
+			backpacktype.putInt("type", 0); // adding type of the map to the
+											// bundle , 0 for manual
 
 			Intent manual = new Intent(AddTrip.this, Map_Activity_Manual.class);
-			manual.putExtras(backpacktrip);
-			manual.putExtras(backpacktype);
-			startActivity(manual);
+			manual.putExtras(backpacktrip); // adding bundle to the intent
+			manual.putExtras(backpacktype); // adding bundle to the intent
+			startActivity(manual); // start the new intent
 
 			break;
 
 		case R.id.GpsB:
 
-			int tripId_gps = getTripId();
-			Bundle packtrip = new Bundle();
-			Bundle packtype = new Bundle();
-			packtrip.putInt("trip", tripId_gps); // adding trip_id to the intent
-			packtype.putInt("type", 1); // adding type of the map
+			// int tripId_gps = tripID; // get trip_id from the database
+			// Bundle packtrip = new Bundle();
+			// Bundle packtype = new Bundle();
+			// packtrip.putInt("trip", tripId_gps); // adding trip_id to the
+			// bundle , store places with trip_id
+			// packtype.putInt("type", 1); // adding type of the map to the
+			// bundle , 1 for GPS
+			//
+			// Intent gps = new Intent(AddTrip.this, Map_Activity_Manual.class);
+			// gps.putExtras(packtrip); // adding bundle to the intent
+			// gps.putExtras(packtype); // adding bundle to the intent
+			// startActivity(gps); // start the new intent
 
-			Intent gps = new Intent(AddTrip.this, Map_Activity_Manual.class);
-			gps.putExtras(packtrip);
-			gps.putExtras(packtype);
-			startActivity(gps);
-
-			
-			// Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
-			// startActivity(i);
+			Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
+			startActivity(i);
 
 			break;
 
 		}
 	}
 
+	private void setFocus(boolean f) {
+
+		if (f == false) {
+			titleET.setFocusable(f);
+			locationET.setFocusable(f);
+			dateET.setFocusable(f);
+			daysET.setFocusable(f);
+			travelbyET.setFocusable(f);
+			totalExpET.setFocusable(f);
+		} else {
+			titleET.setFocusableInTouchMode(true);
+			locationET.setFocusableInTouchMode(true);
+			dateET.setFocusableInTouchMode(true);
+			daysET.setFocusableInTouchMode(true);
+			travelbyET.setFocusableInTouchMode(true);
+			totalExpET.setFocusableInTouchMode(true);
+
+		}
+
+	}
+
 	@Override
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		finish();
+		finish(); // activity finishes when it is paused
 	}
 
-	private int getTripId() {
+	// get the trip_id from the database
+	private int getTripId(String tit) {
 
 		STDatabase db = new STDatabase(AddTrip.this);
 		db.open();
-		int id = db.getTripId();
+		int id = db.getTripId(tit);
 		db.close();
 
 		return id;

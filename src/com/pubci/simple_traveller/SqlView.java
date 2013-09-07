@@ -19,7 +19,7 @@ public class SqlView extends Activity{
 		try{
 			STDatabase info =new STDatabase(this);
 			info.open();
-			String data=info.getDataofPlaces();
+			String data=info.getDataofTrips();
 			info.close();
 			
 			tv.setText(data);

@@ -25,7 +25,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -33,8 +35,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Map_Activity_Manual extends FragmentActivity implements
-		OnClickListener, OnMapLongClickListener, LocationListener {
+		OnClickListener, OnMapLongClickListener, LocationListener,
+		OnInfoWindowClickListener, OnMarkerDragListener {
 
+	final Context context = this;
 	private GoogleMap mMap;
 	private int trip_id;
 	private int mapType;
@@ -42,10 +46,21 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	Button addLocation;
 	TextView titleMapTV;
 	EditText searchtext;
-	final Context context = this;
+
 	ArrayList<Marker> markerList = new ArrayList<Marker>();
 	Marker marker;
 	LocationManager locationManager;
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+
+		for (int i = 0; i < markerList.size(); i++) {
+			addMarkerToDatabase(markerList.get(i));
+		}
+
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +84,11 @@ public class Map_Activity_Manual extends FragmentActivity implements
 			setCurrentLocation();
 			mMap.setOnMapLongClickListener(this);
 			addLocation.setOnClickListener(this);
+			mMap.setOnInfoWindowClickListener(this);
+			mMap.setOnMarkerDragListener(this);
+			// mMap.
 
 		}
-
-	}
-
-	public void GPSSetting() {
 
 	}
 
@@ -174,9 +188,8 @@ public class Map_Activity_Manual extends FragmentActivity implements
 		case R.id.addLocationB:
 
 			Location locat = mMap.getMyLocation();
-			
-			if(locat==null)
-			{
+
+			if (locat == null) {
 				setCurrentLocation();
 				Dialog d = new Dialog(this);
 				d.setTitle("Location is Unavailable");
@@ -184,17 +197,15 @@ public class Map_Activity_Manual extends FragmentActivity implements
 				tv.setText("Please wait until the location is available!");
 				d.setContentView(tv);
 				d.show();
-				
-			}
-			else
-			{
+
+			} else {
 				LatLng locationPoint = new LatLng(locat.getLatitude(),
 						locat.getLongitude());
 
 				onMapLongClick(locationPoint);
-				
+
 			}
-			
+
 			break;
 		}
 	}
@@ -228,6 +239,11 @@ public class Map_Activity_Manual extends FragmentActivity implements
 					public void onClick(DialogInterface dialog, int which) {
 
 						String title = dialogTitle.getText().toString();
+
+						if (title.equals("")) {
+							title = "Title Not given";
+						}
+
 						String description = dialogDescription.getText()
 								.toString();
 						int type = 0;
@@ -258,7 +274,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 								point.latitude, point.longitude);
 						markerList.add(marker);
 
-						addMarkerToDatabase(marker);
+						// addMarkerToDatabase(marker);
 
 						mMap.addMarker(new MarkerOptions().position(point)
 								.icon(icon).title(title).snippet(description)
@@ -338,6 +354,93 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onInfoWindowClick(
+			final com.google.android.gms.maps.model.Marker marker) {
+
+		LayoutInflater layoutInflater = LayoutInflater.from(context);
+		View promptView = layoutInflater.inflate(R.layout.marker_info, null);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				context);
+
+		alertDialogBuilder.setView(promptView);
+
+		TextView markerTitle = (TextView) promptView
+				.findViewById(R.id.dmarkerTitleTV);
+		TextView markerDescription = (TextView) promptView
+				.findViewById(R.id.dmarkerDescriptionTV);
+
+		markerTitle.setText(marker.getTitle());
+		markerDescription.setText(marker.getSnippet());
+
+		// final com.google.android.gms.maps.model.Marker newMarker=marker;
+
+		alertDialogBuilder.setNegativeButton("Move",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+
+						marker.setDraggable(true);
+					}
+				}).setPositiveButton("Delete",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+
+						int markerListId = getMarkerId(marker);
+						markerList.remove(markerListId);
+						marker.remove();
+					}
+
+				});
+
+		AlertDialog alertD = alertDialogBuilder.create();
+		alertD.show();
+
+	}
+
+	protected int getMarkerId(com.google.android.gms.maps.model.Marker marker) {
+
+		for (int i = 0; i < markerList.size(); i++) {
+			if (markerList.get(i).getPointLat() == marker.getPosition().latitude
+					&& markerList.get(i).getPointLong() == marker.getPosition().longitude) {
+
+				return i;
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public void onMarkerDrag(com.google.android.gms.maps.model.Marker marker) {
+		// TODO Auto-generated method stub
+
+		int markerId = getMarkerId(marker);
+		double lat=marker.getPosition().latitude;
+		double longitude=marker.getPosition().longitude;
+		
+		markerList.get(markerId).setMakerLatitude(lat);
+		markerList.get(markerId).setMakerLongitude(longitude);
+
+	}
+
+	@Override
+	public void onMarkerDragEnd(com.google.android.gms.maps.model.Marker marker) {
+		// TODO Auto-generated method stub
+		marker.setDraggable(false);
+	}
+
+	@Override
+	public void onMarkerDragStart(
+			com.google.android.gms.maps.model.Marker marker) {
 		// TODO Auto-generated method stub
 
 	}

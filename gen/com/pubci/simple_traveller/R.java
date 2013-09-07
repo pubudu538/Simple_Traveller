@@ -192,7 +192,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int GpsB=0x7f05001f;
-        public static final int action_settings=0x7f050032;
+        public static final int action_settings=0x7f050035;
         public static final int addLocationB=0x7f05002c;
         public static final int addplacesTV=0x7f05001d;
         public static final int addtripB=0x7f050005;
@@ -208,6 +208,9 @@ containing a value of this type.
         public static final int dateofthetripTV=0x7f050012;
         public static final int daysspendET=0x7f050015;
         public static final int daysspendTV=0x7f050014;
+        public static final int deleteOption=0x7f050037;
+        public static final int dmarkerDescriptionTV=0x7f05002f;
+        public static final int dmarkerTitleTV=0x7f05002e;
         public static final int downIV1=0x7f05001a;
         public static final int downIV2=0x7f05001c;
         public static final int exitB=0x7f05000b;
@@ -220,6 +223,7 @@ containing a value of this type.
         public static final int mainlocationTV=0x7f050010;
         public static final int manualB=0x7f05001e;
         public static final int map=0x7f05002d;
+        public static final int myTripList=0x7f050030;
         public static final int mytripsB=0x7f050009;
         public static final int mytripsTV=0x7f05000a;
         public static final int none=0x7f050000;
@@ -228,11 +232,12 @@ containing a value of this type.
         public static final int saveB=0x7f05001b;
         public static final int searchtripB=0x7f050007;
         public static final int searchtripTV=0x7f050008;
+        public static final int shareOption=0x7f050038;
         public static final int stayingRB=0x7f050027;
-        public static final int tableRow1=0x7f05002e;
+        public static final int tableRow1=0x7f050031;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f05002f;
-        public static final int textView2=0x7f050030;
+        public static final int textView1=0x7f050032;
+        public static final int textView2=0x7f050033;
         public static final int titleET=0x7f05000f;
         public static final int titleMapTV=0x7f05002b;
         public static final int titleTV=0x7f05000e;
@@ -240,7 +245,8 @@ containing a value of this type.
         public static final int topLayout=0x7f05002a;
         public static final int travellingET=0x7f050017;
         public static final int travellingTV=0x7f050016;
-        public static final int tvSQLInfo=0x7f050031;
+        public static final int tvSQLInfo=0x7f050034;
+        public static final int viewOption=0x7f050036;
         public static final int visitingRB=0x7f050028;
     }
     public static final class layout {
@@ -248,11 +254,14 @@ containing a value of this type.
         public static final int addtrip=0x7f030001;
         public static final int dialog=0x7f030002;
         public static final int map_activity_manual=0x7f030003;
-        public static final int splash=0x7f030004;
-        public static final int sqlview=0x7f030005;
+        public static final int marker_info=0x7f030004;
+        public static final int mytrips=0x7f030005;
+        public static final int splash=0x7f030006;
+        public static final int sqlview=0x7f030007;
     }
     public static final class menu {
         public static final int main=0x7f090000;
+        public static final int mytrip_menu=0x7f090001;
     }
     public static final class string {
         public static final int action_settings=0x7f060016;

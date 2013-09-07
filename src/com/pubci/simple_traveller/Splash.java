@@ -22,13 +22,14 @@ public class Splash extends Activity{
 						e.printStackTrace();
 				}finally{
 					
+					// new activity startup 
 					Intent openMain =new Intent("com.pubci.simple_traveller.MAINACTIVITY");
 					startActivity(openMain);
 				}
 			}
 		};
 		
-		timer.start();
+		timer.start();       // thread starts
 		
 		
 	}
@@ -37,7 +38,7 @@ public class Splash extends Activity{
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		finish();
+		finish();           // finishes after the activity is paused
 	}
 
 }

@@ -158,8 +158,8 @@ public class STDatabase {
 				KEY_P_TITLE, KEY_P_DESCRIPTION, KEY_P_TYPE, KEY_P_LATITUDE,
 				KEY_P_LONGITUDE };
 
-		Cursor c = ourDatabase.query(DATABASE_TABLE_PLACES, columns, null, null,
-				null, null, null);
+		Cursor c = ourDatabase.query(DATABASE_TABLE_PLACES, columns, null,
+				null, null, null, null);
 		String result = "";
 
 		int iRowId = c.getColumnIndex(KEY_P_ROWID);
@@ -169,13 +169,13 @@ public class STDatabase {
 		int iType = c.getColumnIndex(KEY_P_TYPE);
 		int iLatitude = c.getColumnIndex(KEY_P_LATITUDE);
 		int iLongitude = c.getColumnIndex(KEY_P_LONGITUDE);
-		
 
 		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
 			result = result + c.getString(iRowId) + " " + c.getString(iTripId)
-					+ " " + c.getString(iTitle) + " " + c.getString(iDescription)
-					+ " " + c.getString(iType) + " " + c.getString(iLatitude)
-					+ " " + c.getString(iLongitude) + "\n";
+					+ " " + c.getString(iTitle) + " "
+					+ c.getString(iDescription) + " " + c.getString(iType)
+					+ " " + c.getString(iLatitude) + " "
+					+ c.getString(iLongitude) + "\n";
 		}
 
 		return result;
@@ -199,14 +199,16 @@ public class STDatabase {
 
 	}
 
-	public void updateEntryTripData(String title, String location, String date,
-			String days, String travel, String expenditure) throws SQLException {
+	public void updateEntryTripData(int id, String title, String location,
+			String date, String days, String travel, String expenditure)
+			throws SQLException {
 
-		Cursor c = ourDatabase.rawQuery("SELECT * FROM " + DATABASE_TABLE_TRIP,
-				null);
-		c.moveToLast();
+		// Cursor c = ourDatabase.rawQuery("SELECT * FROM " +
+		// DATABASE_TABLE_TRIP,
+		// null);
+		// c.moveToLast();
 
-		int rows = Integer.parseInt(c.getString(0));
+		// int rows = Integer.parseInt(c.getString(0));
 
 		ContentValues cvUpdate = new ContentValues();
 		cvUpdate.put(KEY_T_TITLE, title);
@@ -216,19 +218,86 @@ public class STDatabase {
 		cvUpdate.put(KEY_T_TRAVELBY, travel);
 		cvUpdate.put(KEY_T_EXPENDITURE, expenditure);
 		ourDatabase.update(DATABASE_TABLE_TRIP, cvUpdate, KEY_T_ROWID + "="
-				+ rows, null);
+				+ id, null);
 
 	}
-	
-	public int getTripId()
-	{
-		Cursor c = ourDatabase.rawQuery("SELECT * FROM " + DATABASE_TABLE_TRIP,
-				null);
-		c.moveToLast();
 
-		int rows = Integer.parseInt(c.getString(0));
-		
+	public int getTripId(String title) {
+		// Cursor c = ourDatabase.rawQuery("SELECT * FROM " +
+		// DATABASE_TABLE_TRIP,
+		// null);
+		//
+		// c.moveToLast();
+		//
+		// int rows = Integer.parseInt(c.getString(0));
+
+		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_T_ROWID + " FROM "
+				+ DATABASE_TABLE_TRIP + " WHERE " + KEY_T_TITLE + " =? ",
+				new String[] { title });
+
+		c.moveToFirst();
+		int irows = c.getColumnIndex(KEY_T_ROWID);
+
+		int rows = Integer.parseInt(c.getString(irows));
+
 		return rows;
+	}
+
+	public String[] getTripInfoByID(int num) {
+
+		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_T_TITLE + ","
+				+ KEY_T_LOCATION + "," + KEY_T_DATE + "," + KEY_T_DAYS + ","
+				+ KEY_T_TRAVELBY + "," + KEY_T_EXPENDITURE + " FROM "
+				+ DATABASE_TABLE_TRIP + " WHERE " + KEY_T_ROWID + " = " + num,
+				null);
+
+		c.moveToFirst();
+
+		int iTitle = c.getColumnIndex(KEY_T_TITLE);
+		int iLocation = c.getColumnIndex(KEY_T_LOCATION);
+		int iDate = c.getColumnIndex(KEY_T_DATE);
+		int iDays = c.getColumnIndex(KEY_T_DAYS);
+		int iTravel = c.getColumnIndex(KEY_T_TRAVELBY);
+		int iExpenditure = c.getColumnIndex(KEY_T_EXPENDITURE);
+
+//		String result = c.getString(iTitle) + "," + c.getString(iLocation)
+//				+ "," + c.getString(iDate) + "," + c.getString(iDays) + ","
+//				+ c.getString(iTravel) + "," + c.getString(iExpenditure);
+
+		String[] results= new String[6];
+
+
+		results[0]= c.getString(iTitle);
+		results[1]= c.getString(iLocation);
+		results[2]= c.getString(iDate);
+		results[3]= c.getString(iDays);
+		results[4]= c.getString(iTravel);
+		results[5]= c.getString(iExpenditure);
+				
+		
+		
+		return results;
+	}
+
+	public void deleteTripEntry(String title) {
+
+		ourDatabase.delete(DATABASE_TABLE_TRIP, KEY_T_TITLE + "=?",
+				new String[] { title });
+
+	}
+
+	public String getTitles() {
+
+		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_P_TITLE + " FROM "
+				+ DATABASE_TABLE_TRIP, null);
+		String result = "";
+		int iTitle = c.getColumnIndex(KEY_T_TITLE);
+
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+			result = result + c.getString(iTitle) + "\n";
+		}
+
+		return result;
 	}
 
 }

@@ -32,6 +32,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	}
 
+	// Basic initialization and font setup
 	private void initialize() {
 		// TODO Auto-generated method stub
 		Typeface font = Typeface.createFromAsset(getAssets(),
@@ -63,12 +64,18 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		switch (v.getId()) {
 
+		// setting up new intents for other activities
 		case R.id.addtripB:
 			try {
 				ourClass = Class.forName("com.pubci.simple_traveller."
 						+ classes[0]);
+
+				Bundle backpacktrip = new Bundle();
+				backpacktrip.putString("mytrips","mytripsstatusoff");
 				Intent ourIntent = new Intent(MainActivity.this, ourClass);
+				ourIntent.putExtras(backpacktrip);
 				startActivity(ourIntent);
+				
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -76,7 +83,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		case R.id.mytripsB:
 			try {
-				ourClass = Class.forName("com.pubci.simple_travller."
+				ourClass = Class.forName("com.pubci.simple_traveller."
 						+ classes[1]);
 				Intent ourIntent = new Intent(MainActivity.this, ourClass);
 				startActivity(ourIntent);
@@ -95,9 +102,6 @@ public class MainActivity extends Activity implements OnClickListener {
 				e.printStackTrace();
 			}
 			break;
-		
-			
-			
 
 		}
 

@@ -16,24 +16,34 @@ public class Marker {
 		point_long = plong;
 	}
 
-	public String getTitle() {
+	public void setMakerLatitude(double lat)      // set the latitude
+	{
+		point_lat=lat;
+	}
+	
+	public void setMakerLongitude(double longitude)     // set the longitude
+	{
+		point_long=longitude;
+	}
+	
+	public String getTitle() {             // return the title of the marker
 		return title;
 	}
 
-	public String getDescription() {
+	public String getDescription() {      // return the description of the marker
 		return description;
 	}
 
-	public int getType() {
+	public int getType() {                // return the category of the marker
 		return type;
 
 	}
 
-	public double getPointLat() {
+	public double getPointLat() {         // return the latitude
 		return point_lat;
 	}
 
-	public double getPointLong() {
+	public double getPointLong() {        // return the longitude
 		return point_long;
 	}
 }
