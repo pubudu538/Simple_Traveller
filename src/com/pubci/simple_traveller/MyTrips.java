@@ -3,6 +3,7 @@ package com.pubci.simple_traveller;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -58,6 +59,14 @@ public class MyTrips extends Activity implements OnItemClickListener {
 		// strTitles[i] = strBlock[1];
 		// }
 
+		Typeface font = Typeface.createFromAsset(getAssets(),
+				"fonts/Jandaf.ttf");
+		
+		for(int i=0;i<strs.length;i++)
+		{
+			
+		}
+		
 		return strs;
 	}
 
@@ -68,15 +77,8 @@ public class MyTrips extends Activity implements OnItemClickListener {
 		switch (item.getItemId()) {
 		case R.id.viewOption:
 
-			// Dialog d = new Dialog(this);
-			// d.setTitle("Share Options");
-			// TextView tv = new TextView(this);
-			// tv.setText("" + titleList[titleClicked]);
-			// d.setContentView(tv);
-			// d.show();
-
 			Bundle backpacktrip = new Bundle();
-			backpacktrip.putString("mytrips",titleList[titleClicked]);
+			backpacktrip.putString("mytrips", titleList[titleClicked]);
 			Intent trip = new Intent(MyTrips.this, AddTrip.class);
 			trip.putExtras(backpacktrip); // adding bundle to the intent
 			startActivity(trip);
@@ -134,7 +136,7 @@ public class MyTrips extends Activity implements OnItemClickListener {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		finish();
+
 	}
 
 }

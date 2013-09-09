@@ -1,5 +1,7 @@
 package com.pubci.simple_traveller;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -222,14 +224,51 @@ public class STDatabase {
 
 	}
 
-	public int getTripId(String title) {
-		// Cursor c = ourDatabase.rawQuery("SELECT * FROM " +
-		// DATABASE_TABLE_TRIP,
-		// null);
-		//
-		// c.moveToLast();
-		//
-		// int rows = Integer.parseInt(c.getString(0));
+	public void updatePlaceData(int id, double lat, double lon)
+			throws SQLException {
+
+		ContentValues cvUpdate = new ContentValues();
+
+		cvUpdate.put(KEY_P_LATITUDE, lat);
+		cvUpdate.put(KEY_P_LONGITUDE, lon);
+
+		ourDatabase.update(DATABASE_TABLE_PLACES, cvUpdate, KEY_P_ROWID + "="
+				+ id, null);
+
+	}
+
+	public int getPlacesRowID(double latitude,double longitude) throws SQLException{
+
+		 String lat = Double.toString(latitude);
+		 String lon = Double.toString(longitude);
+		
+		 Cursor c = ourDatabase.rawQuery("SELECT " + KEY_P_ROWID + " FROM "
+		 + DATABASE_TABLE_PLACES + " WHERE " + KEY_P_LATITUDE + " =? "
+		 + "and " + KEY_P_LONGITUDE + " =? ", new String[] { lat, lon });
+		
+		 c.moveToFirst();
+		 int irows = c.getColumnIndex(KEY_P_ROWID);
+		
+		 int row = Integer.parseInt(c.getString(irows));
+		
+		 return row;
+
+//		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_P_ROWID + " FROM "
+//				+ DATABASE_TABLE_PLACES + " WHERE " + KEY_P_TITLE + " =? "
+//				+ "and " + KEY_P_DESCRIPTION + " =? " + "and " + KEY_P_TYPE,
+//				new String[] { title, des, String.valueOf(type) });
+//
+//		c.moveToFirst();
+//		int irows = c.getColumnIndex(KEY_P_ROWID);
+//
+//		int row = Integer.parseInt(c.getString(irows));
+//
+//		return row;
+
+	}
+
+	public int getTripId(String title) throws SQLException {
+		
 
 		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_T_ROWID + " FROM "
 				+ DATABASE_TABLE_TRIP + " WHERE " + KEY_T_TITLE + " =? ",
@@ -243,7 +282,7 @@ public class STDatabase {
 		return rows;
 	}
 
-	public String[] getTripInfoByID(int num) {
+	public String[] getTripInfoByID(int num) throws SQLException{
 
 		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_T_TITLE + ","
 				+ KEY_T_LOCATION + "," + KEY_T_DATE + "," + KEY_T_DAYS + ","
@@ -260,23 +299,74 @@ public class STDatabase {
 		int iTravel = c.getColumnIndex(KEY_T_TRAVELBY);
 		int iExpenditure = c.getColumnIndex(KEY_T_EXPENDITURE);
 
-//		String result = c.getString(iTitle) + "," + c.getString(iLocation)
-//				+ "," + c.getString(iDate) + "," + c.getString(iDays) + ","
-//				+ c.getString(iTravel) + "," + c.getString(iExpenditure);
+		// String result = c.getString(iTitle) + "," + c.getString(iLocation)
+		// + "," + c.getString(iDate) + "," + c.getString(iDays) + ","
+		// + c.getString(iTravel) + "," + c.getString(iExpenditure);
 
-		String[] results= new String[6];
+		String[] results = new String[6];
 
+		results[0] = c.getString(iTitle);
+		results[1] = c.getString(iLocation);
+		results[2] = c.getString(iDate);
+		results[3] = c.getString(iDays);
+		results[4] = c.getString(iTravel);
+		results[5] = c.getString(iExpenditure);
 
-		results[0]= c.getString(iTitle);
-		results[1]= c.getString(iLocation);
-		results[2]= c.getString(iDate);
-		results[3]= c.getString(iDays);
-		results[4]= c.getString(iTravel);
-		results[5]= c.getString(iExpenditure);
-				
-		
-		
 		return results;
+	}
+
+	public ArrayList<Marker> getPlacesById(int num) throws SQLException {
+
+		ArrayList<Marker> markers = new ArrayList<Marker>();
+
+		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_P_TITLE + ","
+				+ KEY_P_DESCRIPTION + "," + KEY_P_TYPE + "," + KEY_P_LATITUDE
+				+ "," + KEY_P_LONGITUDE + " FROM " + DATABASE_TABLE_PLACES
+				+ " WHERE " + KEY_P_TRIP_ID + " = " + num, null);
+
+		// int iRowId = c.getColumnIndex(KEY_P_ROWID);
+		// int iTripId = c.getColumnIndex(KEY_P_TRIP_ID);
+		int iTitle = c.getColumnIndex(KEY_P_TITLE);
+		int iDescription = c.getColumnIndex(KEY_P_DESCRIPTION);
+		int iType = c.getColumnIndex(KEY_P_TYPE);
+		int iLatitude = c.getColumnIndex(KEY_P_LATITUDE);
+		int iLongitude = c.getColumnIndex(KEY_P_LONGITUDE);
+
+		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+
+			String title = c.getString(iTitle);
+			String des = c.getString(iDescription);
+			String type = c.getString(iType);
+			String latitude = c.getString(iLatitude);
+			String longitude = c.getString(iLongitude);
+
+			Marker marker = new Marker(title, des, Integer.parseInt(type),
+					Double.parseDouble(latitude), Double.parseDouble(longitude));
+
+			markers.add(marker);
+
+			// result = result + c.getString(iRowId) + " " +
+			// c.getString(iTripId)
+			// + " " + c.getString(iTitle) + " "
+			// + c.getString(iDescription) + " " + c.getString(iType)
+			// + " " + c.getString(iLatitude) + " "
+			// + c.getString(iLongitude) + "\n";
+		}
+
+		return markers;
+
+	}
+
+	public void deletePlaceEntry(double latitude, double longitude) {
+
+		// ourDatabase.delete(DATABASE_TABLE_TRIP, KEY_T_TITLE + "=", null);
+
+		String lat = Double.toString(latitude);
+		String lon = Double.toString(longitude);
+		ourDatabase
+				.delete(DATABASE_TABLE_PLACES, KEY_P_LATITUDE + " =? "
+						+ " and " + KEY_P_LONGITUDE + " =? ", new String[] {
+						lat, lon });
 	}
 
 	public void deleteTripEntry(String title) {
@@ -286,7 +376,7 @@ public class STDatabase {
 
 	}
 
-	public String getTitles() {
+	public String getTitles() throws SQLException {
 
 		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_P_TITLE + " FROM "
 				+ DATABASE_TABLE_TRIP, null);

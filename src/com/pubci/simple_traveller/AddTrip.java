@@ -41,7 +41,7 @@ public class AddTrip extends Activity implements OnClickListener {
 
 		Typeface font = Typeface.createFromAsset(getAssets(),
 				"fonts/Jandaf.ttf");
-		Typeface ft = Typeface.createFromAsset(getAssets(), "fonts/ants.TTF");
+		Typeface ft = Typeface.createFromAsset(getAssets(), "fonts/eras.TTF");
 
 		addtripHeadingTV.setTypeface(font);
 		titleTV.setTypeface(font);
@@ -58,6 +58,10 @@ public class AddTrip extends Activity implements OnClickListener {
 		daysET.setTypeface(ft);
 		travelbyET.setTypeface(ft);
 		totalExpET.setTypeface(ft);
+		
+		saveUpdateB.setTypeface(font);
+		manualB.setTypeface(font);
+		GpsB.setTypeface(font);
 
 	}
 
@@ -129,6 +133,7 @@ public class AddTrip extends Activity implements OnClickListener {
 		db.close();
 
 		return str;
+
 	}
 
 	@Override
@@ -255,38 +260,57 @@ public class AddTrip extends Activity implements OnClickListener {
 		case R.id.manualB:
 
 			int tripIdforPass = tripID; // get trip_id from the database
-			Bundle backpacktrip = new Bundle();
-			Bundle backpacktype = new Bundle();
-			backpacktrip.putInt("trip", tripIdforPass); // adding trip_id to the
+			Bundle backpackTrip = new Bundle();
+			Bundle backpackType = new Bundle();
+			Bundle backpackStatus = new Bundle();
+			backpackTrip.putInt("trip", tripIdforPass); // adding trip_id to the
 														// bundle, store places
 														// with trip_id
-			backpacktype.putInt("type", 0); // adding type of the map to the
+			backpackType.putInt("type", 0); // adding type of the map to the
 											// bundle , 0 for manual
 
+			if (myTripsOn == true) {
+				backpackStatus.putInt("status", 1); // If myTripsOn for 1
+
+			} else {
+				backpackStatus.putInt("status", 0); // If myTripsOn for 0
+			}
+
 			Intent manual = new Intent(AddTrip.this, Map_Activity_Manual.class);
-			manual.putExtras(backpacktrip); // adding bundle to the intent
-			manual.putExtras(backpacktype); // adding bundle to the intent
+			manual.putExtras(backpackTrip); // adding bundle to the intent
+			manual.putExtras(backpackType); // adding bundle to the intent
+			manual.putExtras(backpackStatus);
 			startActivity(manual); // start the new intent
 
 			break;
 
 		case R.id.GpsB:
 
-			// int tripId_gps = tripID; // get trip_id from the database
-			// Bundle packtrip = new Bundle();
-			// Bundle packtype = new Bundle();
-			// packtrip.putInt("trip", tripId_gps); // adding trip_id to the
-			// bundle , store places with trip_id
-			// packtype.putInt("type", 1); // adding type of the map to the
-			// bundle , 1 for GPS
-			//
-			// Intent gps = new Intent(AddTrip.this, Map_Activity_Manual.class);
-			// gps.putExtras(packtrip); // adding bundle to the intent
-			// gps.putExtras(packtype); // adding bundle to the intent
-			// startActivity(gps); // start the new intent
+			int tripId_gps = tripID; // get trip_id from the database
+			Bundle packtrip = new Bundle();
+			Bundle packtype = new Bundle();
+			Bundle packStatus = new Bundle();
+			packtrip.putInt("trip", tripId_gps); // adding trip_id to the bundle
+													// , store places with
+													// trip_id
+			packtype.putInt("type", 1); // adding type of the map to the bundle
+										// , 1 for GPS
 
-			Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
-			startActivity(i);
+			if (myTripsOn == true) {
+				packStatus.putInt("status", 1); // If myTripsOn for 1
+
+			} else {
+				packStatus.putInt("status", 0); // If myTripsOn for 0
+			}
+
+			Intent gps = new Intent(AddTrip.this, Map_Activity_Manual.class);
+			gps.putExtras(packtrip); // adding bundle to the intent
+			gps.putExtras(packtype); // adding bundle to the intent
+			gps.putExtras(packStatus);
+			startActivity(gps); // start the new intent
+
+			// Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
+			// startActivity(i);
 
 			break;
 
@@ -318,7 +342,11 @@ public class AddTrip extends Activity implements OnClickListener {
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		finish(); // activity finishes when it is paused
+
+		if (myTripsOn == false) {
+			finish();
+		}
+
 	}
 
 	// get the trip_id from the database

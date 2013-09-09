@@ -43,24 +43,17 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	private int trip_id;
 	private int mapType;
 
+	private boolean myTripStatusOn = false;
+
 	Button addLocation;
 	TextView titleMapTV;
 	EditText searchtext;
 
 	ArrayList<Marker> markerList = new ArrayList<Marker>();
+	ArrayList<Marker> savedMarkerList;
+	//ArrayList<Marker> updateMarkerList;
 	Marker marker;
 	LocationManager locationManager;
-
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-
-		for (int i = 0; i < markerList.size(); i++) {
-			addMarkerToDatabase(markerList.get(i));
-		}
-
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +155,14 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 		Bundle gotBaskettype = getIntent().getExtras();
 		mapType = gotBaskettype.getInt("type");
+
+		Bundle gotBasketStatus = getIntent().getExtras();
+		int status = gotBasketStatus.getInt("status");
+		if (status == 1) {
+			myTripStatusOn = true;
+			getMarkers(trip_id);
+		}
+
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 		Typeface font = Typeface.createFromAsset(getAssets(),
 				"fonts/saloonf.ttf");
@@ -176,6 +177,43 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 		} else {
 			titleMapTV.setText("    Add Locations Manually!");
+		}
+
+	}
+
+	private void getMarkers(int num) {
+
+		STDatabase getMarkerEntries = new STDatabase(Map_Activity_Manual.this);
+		getMarkerEntries.open();
+		savedMarkerList = getMarkerEntries.getPlacesById(num);
+		//updateMarkerList = savedMarkerList;
+		getMarkerEntries.close();
+
+		BitmapDescriptor icon = null;
+
+		for (int i = 0; i < savedMarkerList.size(); i++) {
+
+			// mMap.addMarker(new MarkerOptions().position(point)
+			// .icon(icon).title(title).snippet(description)
+			// .draggable(false));
+			LatLng position = new LatLng(savedMarkerList.get(i).getPointLat(),
+					savedMarkerList.get(i).getPointLong());
+
+			if (savedMarkerList.get(i).getType() == 1) {
+				icon = BitmapDescriptorFactory.fromResource(R.drawable.food);
+			} else if (savedMarkerList.get(i).getType() == 2) {
+				icon = BitmapDescriptorFactory.fromResource(R.drawable.stay);
+			} else if (savedMarkerList.get(i).getType() == 3) {
+				icon = BitmapDescriptorFactory.fromResource(R.drawable.visit);
+			} else if (savedMarkerList.get(i).getType() == 4) {
+				icon = BitmapDescriptorFactory.fromResource(R.drawable.toilet);
+			}
+
+			mMap.addMarker(new MarkerOptions().position(position).icon(icon)
+					.title(savedMarkerList.get(i).getTitle())
+					.snippet(savedMarkerList.get(i).getDescription())
+					.draggable(false));
+
 		}
 
 	}
@@ -396,7 +434,15 @@ public class Map_Activity_Manual extends FragmentActivity implements
 						// TODO Auto-generated method stub
 
 						int markerListId = getMarkerId(marker);
-						markerList.remove(markerListId);
+						if (markerListId != 9999) {
+							markerList.remove(markerListId);
+
+						} else {
+							int savedMarkerId = getSavedMarkerId(marker);
+							savedMarkerList.remove(savedMarkerId);
+						//	updateMarkerList.remove(savedMarkerId);
+							deletePlace(marker);
+						}
 						marker.remove();
 					}
 
@@ -407,15 +453,44 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 	}
 
+	private void deletePlace(com.google.android.gms.maps.model.Marker marker) {
+
+		STDatabase entry = new STDatabase(Map_Activity_Manual.this);
+		entry.open();
+		entry.deletePlaceEntry(marker.getPosition().latitude,
+				marker.getPosition().longitude);
+		entry.close();
+	}
+
 	protected int getMarkerId(com.google.android.gms.maps.model.Marker marker) {
 
+		String title = marker.getTitle();
+		String des = marker.getSnippet();
+
 		for (int i = 0; i < markerList.size(); i++) {
-			if (markerList.get(i).getPointLat() == marker.getPosition().latitude
-					&& markerList.get(i).getPointLong() == marker.getPosition().longitude) {
+			if (markerList.get(i).getTitle().equals(title)
+					&& markerList.get(i).getDescription().equals(des)) {
 
 				return i;
 			}
 		}
+
+		return 9999;
+	}
+
+	public int getSavedMarkerId(com.google.android.gms.maps.model.Marker marker) {
+
+		String title = marker.getTitle();
+		String des = marker.getSnippet();
+
+		for (int i = 0; i < savedMarkerList.size(); i++) {
+			if (savedMarkerList.get(i).getTitle().equals(title)
+					&& savedMarkerList.get(i).getDescription().equals(des)) {
+
+				return i;
+			}
+		}
+
 		return 0;
 	}
 
@@ -423,19 +498,109 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	public void onMarkerDrag(com.google.android.gms.maps.model.Marker marker) {
 		// TODO Auto-generated method stub
 
-		int markerId = getMarkerId(marker);
-		double lat=marker.getPosition().latitude;
-		double longitude=marker.getPosition().longitude;
-		
-		markerList.get(markerId).setMakerLatitude(lat);
-		markerList.get(markerId).setMakerLongitude(longitude);
+		// int markerId = getMarkerId(marker);
+		//
+		// double newLatitude = marker.getPosition().latitude;
+		// double newLongitude = marker.getPosition().longitude;
+		//
+		// if (markerId != 9999) {
+		//
+		// markerList.get(markerId).setMakerLatitude(newLatitude);
+		// markerList.get(markerId).setMakerLongitude(newLongitude);
+		//
+		// } else {
+		//
+		// int savedMarkerId = getSavedMarkerId(marker);
+		//
+		// double oldLatitude = savedMarkerList.get(savedMarkerId)
+		// .getPointLat();
+		// double oldLongitude = savedMarkerList.get(savedMarkerId)
+		// .getPointLong();
+		//
+		// int rowId = getPlaceRowID(oldLatitude, oldLongitude);
+		// // savedMarkerList.get(savedMarkerId).setMakerLatitude(lat);
+		// // savedMarkerList.get(savedMarkerId).setMakerLongitude(longitude);
+		// updatePlaceData(rowId,newLatitude,newLongitude);
+		//
+		// //
+		//
+		// }
 
+	}
+
+	public int getPlaceRowID(double lat, double lon) {
+		STDatabase entry = new STDatabase(Map_Activity_Manual.this);
+		entry.open();
+		int rowId = entry.getPlacesRowID(lat, lon);
+		entry.close();
+
+		return rowId;
+	}
+
+	public void updatePlaceData(int row, double lat, double lon) {
+		STDatabase entryUpdate = new STDatabase(Map_Activity_Manual.this);
+		entryUpdate.open();
+		entryUpdate.updatePlaceData(row, lat, lon);
+		entryUpdate.close();
 	}
 
 	@Override
 	public void onMarkerDragEnd(com.google.android.gms.maps.model.Marker marker) {
 		// TODO Auto-generated method stub
 		marker.setDraggable(false);
+
+		int markerId = getMarkerId(marker);
+
+		double newLatitude = marker.getPosition().latitude;
+		double newLongitude = marker.getPosition().longitude;
+
+		if (markerId != 9999) {
+
+			markerList.get(markerId).setMakerLatitude(newLatitude);
+			markerList.get(markerId).setMakerLongitude(newLongitude);
+
+		} else {
+
+			// int updateMarkerId = getSavedMarkerId(marker);
+			//
+			// savedMarkerList.get(updateMarkerId).setMakerLatitude(newLatitude);
+			// savedMarkerList.get(updateMarkerId).setMakerLongitude(newLongitude);
+
+			int savedMarkerId = getSavedMarkerId(marker);
+
+			double oldLatitude = savedMarkerList.get(savedMarkerId)
+					.getPointLat();
+			double oldLongitude = savedMarkerList.get(savedMarkerId)
+					.getPointLong();
+
+			int rowId = getPlaceRowID(oldLatitude, oldLongitude);
+
+			updatePlaceData(rowId, newLatitude, newLongitude);
+
+			savedMarkerList.get(savedMarkerId).setMakerLatitude(newLatitude);
+			savedMarkerList.get(savedMarkerId).setMakerLongitude(newLongitude);
+
+		}
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+
+		for (int i = 0; i < markerList.size(); i++) {
+			addMarkerToDatabase(markerList.get(i));
+		}
+
+		// for (int i = 0; i < updateMarkerList.size(); i++) {
+		// String title = savedMarkerList.get(i).getTitle();
+		// String des = savedMarkerList.get(i).getDescription();
+		// int type = savedMarkerList.get(i).getType();
+		// int rowId = getPlaceRowID(title, des, type);
+		// updatePlaceData(rowId, updateMarkerList.get(i).getPointLat(),
+		// updateMarkerList.get(i).getPointLong());
+		// }
+
 	}
 
 	@Override

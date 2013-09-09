@@ -15,12 +15,14 @@
             android:id="@+id/titleMapTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:text=""
+            android:textColor="#FF033E" />
 
         <Button
             android:id="@+id/addLocationB"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#A2006D"
             android:text="Add The GPS Location"
             android:visibility="invisible" />
     </LinearLayout>
