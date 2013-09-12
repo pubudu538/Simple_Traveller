@@ -156,42 +156,59 @@ containing a value of this type.
     }
     public static final class drawable {
         public static final int addtrip=0x7f020000;
-        public static final int common_signin_btn_icon_dark=0x7f020001;
-        public static final int common_signin_btn_icon_disabled_dark=0x7f020002;
-        public static final int common_signin_btn_icon_disabled_focus_dark=0x7f020003;
-        public static final int common_signin_btn_icon_disabled_focus_light=0x7f020004;
-        public static final int common_signin_btn_icon_disabled_light=0x7f020005;
-        public static final int common_signin_btn_icon_focus_dark=0x7f020006;
-        public static final int common_signin_btn_icon_focus_light=0x7f020007;
-        public static final int common_signin_btn_icon_light=0x7f020008;
-        public static final int common_signin_btn_icon_normal_dark=0x7f020009;
-        public static final int common_signin_btn_icon_normal_light=0x7f02000a;
-        public static final int common_signin_btn_icon_pressed_dark=0x7f02000b;
-        public static final int common_signin_btn_icon_pressed_light=0x7f02000c;
-        public static final int common_signin_btn_text_dark=0x7f02000d;
-        public static final int common_signin_btn_text_disabled_dark=0x7f02000e;
-        public static final int common_signin_btn_text_disabled_focus_dark=0x7f02000f;
-        public static final int common_signin_btn_text_disabled_focus_light=0x7f020010;
-        public static final int common_signin_btn_text_disabled_light=0x7f020011;
-        public static final int common_signin_btn_text_focus_dark=0x7f020012;
-        public static final int common_signin_btn_text_focus_light=0x7f020013;
-        public static final int common_signin_btn_text_light=0x7f020014;
-        public static final int common_signin_btn_text_normal_dark=0x7f020015;
-        public static final int common_signin_btn_text_normal_light=0x7f020016;
-        public static final int common_signin_btn_text_pressed_dark=0x7f020017;
-        public static final int common_signin_btn_text_pressed_light=0x7f020018;
-        public static final int downarrow=0x7f020019;
-        public static final int food=0x7f02001a;
-        public static final int ic_launcher=0x7f02001b;
-        public static final int image_1=0x7f02001c;
-        public static final int image_2=0x7f02001d;
-        public static final int mytrips=0x7f02001e;
-        public static final int search=0x7f02001f;
-        public static final int stay=0x7f020020;
-        public static final int toilet=0x7f020021;
-        public static final int travel=0x7f020022;
-        public static final int visit=0x7f020023;
-        public static final int warning=0x7f020024;
+        public static final int addtrip1=0x7f020001;
+        public static final int common_signin_btn_icon_dark=0x7f020002;
+        public static final int common_signin_btn_icon_disabled_dark=0x7f020003;
+        public static final int common_signin_btn_icon_disabled_focus_dark=0x7f020004;
+        public static final int common_signin_btn_icon_disabled_focus_light=0x7f020005;
+        public static final int common_signin_btn_icon_disabled_light=0x7f020006;
+        public static final int common_signin_btn_icon_focus_dark=0x7f020007;
+        public static final int common_signin_btn_icon_focus_light=0x7f020008;
+        public static final int common_signin_btn_icon_light=0x7f020009;
+        public static final int common_signin_btn_icon_normal_dark=0x7f02000a;
+        public static final int common_signin_btn_icon_normal_light=0x7f02000b;
+        public static final int common_signin_btn_icon_pressed_dark=0x7f02000c;
+        public static final int common_signin_btn_icon_pressed_light=0x7f02000d;
+        public static final int common_signin_btn_text_dark=0x7f02000e;
+        public static final int common_signin_btn_text_disabled_dark=0x7f02000f;
+        public static final int common_signin_btn_text_disabled_focus_dark=0x7f020010;
+        public static final int common_signin_btn_text_disabled_focus_light=0x7f020011;
+        public static final int common_signin_btn_text_disabled_light=0x7f020012;
+        public static final int common_signin_btn_text_focus_dark=0x7f020013;
+        public static final int common_signin_btn_text_focus_light=0x7f020014;
+        public static final int common_signin_btn_text_light=0x7f020015;
+        public static final int common_signin_btn_text_normal_dark=0x7f020016;
+        public static final int common_signin_btn_text_normal_light=0x7f020017;
+        public static final int common_signin_btn_text_pressed_dark=0x7f020018;
+        public static final int common_signin_btn_text_pressed_light=0x7f020019;
+        public static final int down2=0x7f02001a;
+        public static final int downarrow=0x7f02001b;
+        public static final int downarrownew=0x7f02001c;
+        public static final int exit=0x7f02001d;
+        public static final int food=0x7f02001e;
+        public static final int food2=0x7f02001f;
+        public static final int foodnew=0x7f020020;
+        public static final int ic_launcher=0x7f020021;
+        public static final int image_1=0x7f020022;
+        public static final int image_2=0x7f020023;
+        public static final int mytrips=0x7f020024;
+        public static final int mytrips1=0x7f020025;
+        public static final int mytrips3=0x7f020026;
+        public static final int mytripsact=0x7f020027;
+        public static final int mytripsnew=0x7f020028;
+        public static final int route=0x7f020029;
+        public static final int routenew=0x7f02002a;
+        public static final int search=0x7f02002b;
+        public static final int stay=0x7f02002c;
+        public static final int toilet=0x7f02002d;
+        public static final int toilet2=0x7f02002e;
+        public static final int travel=0x7f02002f;
+        public static final int travel1=0x7f020030;
+        public static final int travelworld=0x7f020031;
+        public static final int upload=0x7f020032;
+        public static final int visit=0x7f020033;
+        public static final int visit2=0x7f020034;
+        public static final int warning=0x7f020035;
     }
     public static final class id {
         public static final int GpsB=0x7f05001f;
@@ -216,8 +233,6 @@ containing a value of this type.
         public static final int dmarkerTitleTV=0x7f05002e;
         public static final int downIV1=0x7f05001a;
         public static final int downIV2=0x7f05001c;
-        public static final int exitB=0x7f05000b;
-        public static final int exitTV=0x7f05000c;
         public static final int expendiitureTV=0x7f050018;
         public static final int expenditureET=0x7f050019;
         public static final int foodRB=0x7f050026;
@@ -235,7 +250,6 @@ containing a value of this type.
         public static final int saveB=0x7f05001b;
         public static final int searchtripB=0x7f050007;
         public static final int searchtripTV=0x7f050008;
-        public static final int shareOption=0x7f050038;
         public static final int stayingRB=0x7f050027;
         public static final int tableRow1=0x7f050031;
         public static final int terrain=0x7f050003;
@@ -249,6 +263,8 @@ containing a value of this type.
         public static final int travellingET=0x7f050017;
         public static final int travellingTV=0x7f050016;
         public static final int tvSQLInfo=0x7f050034;
+        public static final int uploadB=0x7f05000b;
+        public static final int uploadTV=0x7f05000c;
         public static final int viewOption=0x7f050036;
         public static final int visitingRB=0x7f050028;
     }
@@ -351,6 +367,7 @@ containing a value of this type.
         public static final int hello_world=0x7f060017;
         public static final int mytrips=0x7f060019;
         public static final int searchfortrips=0x7f06001a;
+        public static final int uploadData=0x7f06001b;
     }
     public static final class style {
         /** 

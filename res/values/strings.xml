@@ -7,5 +7,6 @@
     <string name="addtrip">Add A Trip Route</string>
     <string name="mytrips">My Trips</string>
     <string name="searchfortrips">Search for Trips</string>
+    <string name="uploadData">Upload Data</string>
 
 </resources>

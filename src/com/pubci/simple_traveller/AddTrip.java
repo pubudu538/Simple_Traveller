@@ -125,7 +125,7 @@ public class AddTrip extends Activity implements OnClickListener {
 
 	}
 
-	private String[] getTripRouteData(int number) {
+	public String[] getTripRouteData(int number) {
 
 		STDatabase db = new STDatabase(AddTrip.this);
 		db.open();
@@ -350,7 +350,7 @@ public class AddTrip extends Activity implements OnClickListener {
 	}
 
 	// get the trip_id from the database
-	private int getTripId(String tit) {
+	public int getTripId(String tit) {
 
 		STDatabase db = new STDatabase(AddTrip.this);
 		db.open();
@@ -359,5 +359,7 @@ public class AddTrip extends Activity implements OnClickListener {
 
 		return id;
 	}
+	
+	
 
 }

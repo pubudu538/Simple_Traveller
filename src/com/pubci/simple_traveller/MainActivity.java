@@ -2,23 +2,18 @@ package com.pubci.simple_traveller;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
 
 	ImageButton addtrip, mytrips, searchtrip;
-	TextView addtv, mytripstv, searchtv;
+	TextView addtv, mytripstv, searchtv, uploadtv;
 	String classes[] = { "AddTrip", "MyTrips", "SearchTrips" };
 
 	@Override
@@ -43,10 +38,11 @@ public class MainActivity extends Activity implements OnClickListener {
 		addtv = (TextView) (findViewById(R.id.addtripTV));
 		mytripstv = (TextView) (findViewById(R.id.mytripsTV));
 		searchtv = (TextView) (findViewById(R.id.searchtripTV));
+		uploadtv = (TextView) findViewById(R.id.uploadTV);
 		addtv.setTypeface(font);
 		mytripstv.setTypeface(font);
 		searchtv.setTypeface(font);
-
+		uploadtv.setTypeface(font);
 	}
 
 	@Override
@@ -71,11 +67,11 @@ public class MainActivity extends Activity implements OnClickListener {
 						+ classes[0]);
 
 				Bundle backpacktrip = new Bundle();
-				backpacktrip.putString("mytrips","mytripsstatusoff");
+				backpacktrip.putString("mytrips", "mytripsstatusoff");
 				Intent ourIntent = new Intent(MainActivity.this, ourClass);
 				ourIntent.putExtras(backpacktrip);
 				startActivity(ourIntent);
-				
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -93,17 +89,25 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.searchtripB:
-			try {
-				ourClass = Class.forName("com.pubci.simple_travller."
-						+ classes[2]);
-				Intent ourIntent = new Intent(MainActivity.this, ourClass);
-				startActivity(ourIntent);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
-			break;
+			// try {
+			// ourClass = Class.forName("com.pubci.simple_travller."
+			// + classes[2]);
+			// Intent ourIntent = new Intent(MainActivity.this, ourClass);
+			// startActivity(ourIntent);
+			//
+			//
+			// } catch (ClassNotFoundException e) {
+			// e.printStackTrace();
+			// }
 
+			// Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
+			// startActivity(i);
+			break;
+		case R.id.uploadB:
+
+			break;
 		}
 
 	}
+
 }

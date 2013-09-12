@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class STDatabase {
@@ -136,22 +134,27 @@ public class STDatabase {
 				null, null, null);
 		String result = "";
 
-		int iRowId = c.getColumnIndex(KEY_T_ROWID);
-		int iTitle = c.getColumnIndex(KEY_T_TITLE);
-		int iLocation = c.getColumnIndex(KEY_T_LOCATION);
-		int iDate = c.getColumnIndex(KEY_T_DATE);
-		int iDays = c.getColumnIndex(KEY_T_DAYS);
-		int iTravel = c.getColumnIndex(KEY_T_TRAVELBY);
-		int iExpenditure = c.getColumnIndex(KEY_T_EXPENDITURE);
+		if (c != null) {
 
-		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-			result = result + c.getString(iRowId) + " " + c.getString(iTitle)
-					+ " " + c.getString(iLocation) + " " + c.getString(iDate)
-					+ " " + c.getString(iDays) + " " + c.getString(iTravel)
-					+ " " + c.getString(iExpenditure) + "\n";
+			int iRowId = c.getColumnIndex(KEY_T_ROWID);
+			int iTitle = c.getColumnIndex(KEY_T_TITLE);
+			int iLocation = c.getColumnIndex(KEY_T_LOCATION);
+			int iDate = c.getColumnIndex(KEY_T_DATE);
+			int iDays = c.getColumnIndex(KEY_T_DAYS);
+			int iTravel = c.getColumnIndex(KEY_T_TRAVELBY);
+			int iExpenditure = c.getColumnIndex(KEY_T_EXPENDITURE);
+
+			for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+				result = result + c.getString(iRowId) + " "
+						+ c.getString(iTitle) + " " + c.getString(iLocation)
+						+ " " + c.getString(iDate) + " " + c.getString(iDays)
+						+ " " + c.getString(iTravel) + " "
+						+ c.getString(iExpenditure) + "\n";
+			}
+
+			return result;
 		}
-
-		return result;
+		return null;
 	}
 
 	public String getDataofPlaces() throws SQLException {
@@ -164,23 +167,27 @@ public class STDatabase {
 				null, null, null, null);
 		String result = "";
 
-		int iRowId = c.getColumnIndex(KEY_P_ROWID);
-		int iTripId = c.getColumnIndex(KEY_P_TRIP_ID);
-		int iTitle = c.getColumnIndex(KEY_P_TITLE);
-		int iDescription = c.getColumnIndex(KEY_P_DESCRIPTION);
-		int iType = c.getColumnIndex(KEY_P_TYPE);
-		int iLatitude = c.getColumnIndex(KEY_P_LATITUDE);
-		int iLongitude = c.getColumnIndex(KEY_P_LONGITUDE);
+		if (c != null) {
 
-		for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-			result = result + c.getString(iRowId) + " " + c.getString(iTripId)
-					+ " " + c.getString(iTitle) + " "
-					+ c.getString(iDescription) + " " + c.getString(iType)
-					+ " " + c.getString(iLatitude) + " "
-					+ c.getString(iLongitude) + "\n";
+			int iRowId = c.getColumnIndex(KEY_P_ROWID);
+			int iTripId = c.getColumnIndex(KEY_P_TRIP_ID);
+			int iTitle = c.getColumnIndex(KEY_P_TITLE);
+			int iDescription = c.getColumnIndex(KEY_P_DESCRIPTION);
+			int iType = c.getColumnIndex(KEY_P_TYPE);
+			int iLatitude = c.getColumnIndex(KEY_P_LATITUDE);
+			int iLongitude = c.getColumnIndex(KEY_P_LONGITUDE);
+
+			for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+				result = result + c.getString(iRowId) + " "
+						+ c.getString(iTripId) + " " + c.getString(iTitle)
+						+ " " + c.getString(iDescription) + " "
+						+ c.getString(iType) + " " + c.getString(iLatitude)
+						+ " " + c.getString(iLongitude) + "\n";
+			}
+
+			return result;
 		}
-
-		return result;
+		return null;
 	}
 
 	public boolean checkTitleAvailability(String s) {
@@ -237,52 +244,49 @@ public class STDatabase {
 
 	}
 
-	public int getPlacesRowID(double latitude,double longitude) throws SQLException{
+	public int getPlacesRowID(double latitude, double longitude)
+			throws SQLException {
 
-		 String lat = Double.toString(latitude);
-		 String lon = Double.toString(longitude);
-		
-		 Cursor c = ourDatabase.rawQuery("SELECT " + KEY_P_ROWID + " FROM "
-		 + DATABASE_TABLE_PLACES + " WHERE " + KEY_P_LATITUDE + " =? "
-		 + "and " + KEY_P_LONGITUDE + " =? ", new String[] { lat, lon });
-		
-		 c.moveToFirst();
-		 int irows = c.getColumnIndex(KEY_P_ROWID);
-		
-		 int row = Integer.parseInt(c.getString(irows));
-		
-		 return row;
+		String lat = Double.toString(latitude);
+		String lon = Double.toString(longitude);
 
-//		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_P_ROWID + " FROM "
-//				+ DATABASE_TABLE_PLACES + " WHERE " + KEY_P_TITLE + " =? "
-//				+ "and " + KEY_P_DESCRIPTION + " =? " + "and " + KEY_P_TYPE,
-//				new String[] { title, des, String.valueOf(type) });
-//
-//		c.moveToFirst();
-//		int irows = c.getColumnIndex(KEY_P_ROWID);
-//
-//		int row = Integer.parseInt(c.getString(irows));
-//
-//		return row;
+		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_P_ROWID + " FROM "
+				+ DATABASE_TABLE_PLACES + " WHERE " + KEY_P_LATITUDE + " =? "
+				+ "and " + KEY_P_LONGITUDE + " =? ", new String[] { lat, lon });
+
+		if (c != null) {
+			c.moveToFirst();
+			int irows = c.getColumnIndex(KEY_P_ROWID);
+
+			int row = Integer.parseInt(c.getString(irows));
+
+			return row;
+		}
+		
+		return 0;
 
 	}
 
 	public int getTripId(String title) throws SQLException {
-		
 
 		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_T_ROWID + " FROM "
 				+ DATABASE_TABLE_TRIP + " WHERE " + KEY_T_TITLE + " =? ",
 				new String[] { title });
 
-		c.moveToFirst();
-		int irows = c.getColumnIndex(KEY_T_ROWID);
+		if (c != null) {
 
-		int rows = Integer.parseInt(c.getString(irows));
+			c.moveToFirst();
+			int irows = c.getColumnIndex(KEY_T_ROWID);
 
-		return rows;
+			int rows = Integer.parseInt(c.getString(irows));
+
+			return rows;
+		}
+		return 0;
+
 	}
 
-	public String[] getTripInfoByID(int num) throws SQLException{
+	public String[] getTripInfoByID(int num) throws SQLException {
 
 		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_T_TITLE + ","
 				+ KEY_T_LOCATION + "," + KEY_T_DATE + "," + KEY_T_DAYS + ","
@@ -290,29 +294,34 @@ public class STDatabase {
 				+ DATABASE_TABLE_TRIP + " WHERE " + KEY_T_ROWID + " = " + num,
 				null);
 
-		c.moveToFirst();
+		if (c != null) {
+			c.moveToFirst();
 
-		int iTitle = c.getColumnIndex(KEY_T_TITLE);
-		int iLocation = c.getColumnIndex(KEY_T_LOCATION);
-		int iDate = c.getColumnIndex(KEY_T_DATE);
-		int iDays = c.getColumnIndex(KEY_T_DAYS);
-		int iTravel = c.getColumnIndex(KEY_T_TRAVELBY);
-		int iExpenditure = c.getColumnIndex(KEY_T_EXPENDITURE);
+			int iTitle = c.getColumnIndex(KEY_T_TITLE);
+			int iLocation = c.getColumnIndex(KEY_T_LOCATION);
+			int iDate = c.getColumnIndex(KEY_T_DATE);
+			int iDays = c.getColumnIndex(KEY_T_DAYS);
+			int iTravel = c.getColumnIndex(KEY_T_TRAVELBY);
+			int iExpenditure = c.getColumnIndex(KEY_T_EXPENDITURE);
 
-		// String result = c.getString(iTitle) + "," + c.getString(iLocation)
-		// + "," + c.getString(iDate) + "," + c.getString(iDays) + ","
-		// + c.getString(iTravel) + "," + c.getString(iExpenditure);
+			// String result = c.getString(iTitle) + "," +
+			// c.getString(iLocation)
+			// + "," + c.getString(iDate) + "," + c.getString(iDays) + ","
+			// + c.getString(iTravel) + "," + c.getString(iExpenditure);
 
-		String[] results = new String[6];
+			String[] results = new String[6];
 
-		results[0] = c.getString(iTitle);
-		results[1] = c.getString(iLocation);
-		results[2] = c.getString(iDate);
-		results[3] = c.getString(iDays);
-		results[4] = c.getString(iTravel);
-		results[5] = c.getString(iExpenditure);
+			results[0] = c.getString(iTitle);
+			results[1] = c.getString(iLocation);
+			results[2] = c.getString(iDate);
+			results[3] = c.getString(iDays);
+			results[4] = c.getString(iTravel);
+			results[5] = c.getString(iExpenditure);
 
-		return results;
+			return results;
+		}
+
+		return null;
 	}
 
 	public ArrayList<Marker> getPlacesById(int num) throws SQLException {

@@ -43,15 +43,13 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	private int trip_id;
 	private int mapType;
 
-	private boolean myTripStatusOn = false;
-
 	Button addLocation;
 	TextView titleMapTV;
 	EditText searchtext;
 
 	ArrayList<Marker> markerList = new ArrayList<Marker>();
 	ArrayList<Marker> savedMarkerList;
-	//ArrayList<Marker> updateMarkerList;
+	// ArrayList<Marker> updateMarkerList;
 	Marker marker;
 	LocationManager locationManager;
 
@@ -159,7 +157,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 		Bundle gotBasketStatus = getIntent().getExtras();
 		int status = gotBasketStatus.getInt("status");
 		if (status == 1) {
-			myTripStatusOn = true;
+
 			getMarkers(trip_id);
 		}
 
@@ -186,7 +184,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 		STDatabase getMarkerEntries = new STDatabase(Map_Activity_Manual.this);
 		getMarkerEntries.open();
 		savedMarkerList = getMarkerEntries.getPlacesById(num);
-		//updateMarkerList = savedMarkerList;
+		// updateMarkerList = savedMarkerList;
 		getMarkerEntries.close();
 
 		BitmapDescriptor icon = null;
@@ -200,13 +198,13 @@ public class Map_Activity_Manual extends FragmentActivity implements
 					savedMarkerList.get(i).getPointLong());
 
 			if (savedMarkerList.get(i).getType() == 1) {
-				icon = BitmapDescriptorFactory.fromResource(R.drawable.food);
+				icon = BitmapDescriptorFactory.fromResource(R.drawable.food2);
 			} else if (savedMarkerList.get(i).getType() == 2) {
 				icon = BitmapDescriptorFactory.fromResource(R.drawable.stay);
 			} else if (savedMarkerList.get(i).getType() == 3) {
-				icon = BitmapDescriptorFactory.fromResource(R.drawable.visit);
+				icon = BitmapDescriptorFactory.fromResource(R.drawable.visit2);
 			} else if (savedMarkerList.get(i).getType() == 4) {
-				icon = BitmapDescriptorFactory.fromResource(R.drawable.toilet);
+				icon = BitmapDescriptorFactory.fromResource(R.drawable.toilet2);
 			}
 
 			mMap.addMarker(new MarkerOptions().position(position).icon(icon)
@@ -290,7 +288,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 						if (rbFood.isChecked()) {
 							icon = BitmapDescriptorFactory
-									.fromResource(R.drawable.food);
+									.fromResource(R.drawable.food2);
 							type = 1;
 						} else if (rbStay.isChecked()) {
 							icon = BitmapDescriptorFactory
@@ -299,12 +297,12 @@ public class Map_Activity_Manual extends FragmentActivity implements
 						} else if (rbVisit.isChecked()) {
 
 							icon = BitmapDescriptorFactory
-									.fromResource(R.drawable.visit);
+									.fromResource(R.drawable.visit2);
 							type = 3;
 
 						} else if (rbToilet.isChecked()) {
 							icon = BitmapDescriptorFactory
-									.fromResource(R.drawable.toilet);
+									.fromResource(R.drawable.toilet2);
 							type = 4;
 						}
 
@@ -440,7 +438,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 						} else {
 							int savedMarkerId = getSavedMarkerId(marker);
 							savedMarkerList.remove(savedMarkerId);
-						//	updateMarkerList.remove(savedMarkerId);
+							// updateMarkerList.remove(savedMarkerId);
 							deletePlace(marker);
 						}
 						marker.remove();

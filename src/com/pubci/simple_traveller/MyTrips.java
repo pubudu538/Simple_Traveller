@@ -1,9 +1,7 @@
 package com.pubci.simple_traveller;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -14,13 +12,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class MyTrips extends Activity implements OnItemClickListener {
 
 	ListView listView;
 	String[] titleList;
 	int titleClicked;
+	boolean pauseAtTrip = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,30 +41,15 @@ public class MyTrips extends Activity implements OnItemClickListener {
 
 	}
 
-	private String[] getTitles() {
+	public String[] getTitles() {
 
 		STDatabase info = new STDatabase(this);
 		info.open();
-		// String data = info.getDataofTrips();
 		String data = info.getTitles();
 		info.close();
 
 		String[] strs = data.split(System.getProperty("line.separator"));
-		// String[] strTitles = new String[strs.length];
-		//
-		// for (int i = 0; i < strs.length; i++) {
-		// String[] strBlock = strs[i].split(" ");
-		// strTitles[i] = strBlock[1];
-		// }
 
-		Typeface font = Typeface.createFromAsset(getAssets(),
-				"fonts/Jandaf.ttf");
-		
-		for(int i=0;i<strs.length;i++)
-		{
-			
-		}
-		
 		return strs;
 	}
 
@@ -77,6 +60,7 @@ public class MyTrips extends Activity implements OnItemClickListener {
 		switch (item.getItemId()) {
 		case R.id.viewOption:
 
+			pauseAtTrip = true;
 			Bundle backpacktrip = new Bundle();
 			backpacktrip.putString("mytrips", titleList[titleClicked]);
 			Intent trip = new Intent(MyTrips.this, AddTrip.class);
@@ -97,15 +81,7 @@ public class MyTrips extends Activity implements OnItemClickListener {
 			startActivity(intent);
 
 			break;
-		case R.id.shareOption:
 
-			// Dialog d = new Dialog(this);
-			// d.setTitle("Share Options");
-			// TextView tv = new TextView(this);
-			// tv.setText("Not Yet Implemented!");
-			// d.setContentView(tv);
-			// d.show();
-			break;
 		}
 
 		return true;
@@ -137,6 +113,16 @@ public class MyTrips extends Activity implements OnItemClickListener {
 		// TODO Auto-generated method stub
 		super.onPause();
 
+		if (pauseAtTrip == false) {
+			finish();
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		pauseAtTrip = false;
 	}
 
 }

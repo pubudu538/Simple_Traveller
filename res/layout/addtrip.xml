@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/addtrip" >
+    android:background="@drawable/addtrip1" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,9 +87,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:textColor="#DA3287"
                 android:hint="01-12-2013"
-                android:inputType="date" />
+                android:inputType="date"
+                android:textColor="#DA3287" />
         </LinearLayout>
 
         <LinearLayout
@@ -108,11 +108,11 @@
 
             <EditText
                 android:id="@+id/daysspendET"
-                android:textColor="#DA3287"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" >
+                android:inputType="number"
+                android:textColor="#DA3287" >
 
                 <requestFocus />
             </EditText>
@@ -134,11 +134,11 @@
 
             <EditText
                 android:id="@+id/travellingET"
-                android:textColor="#DA3287"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Car,Bus,Train.." >
+                android:hint="Car,Bus,Train.."
+                android:textColor="#DA3287" >
 
                 <requestFocus />
             </EditText>
@@ -160,11 +160,11 @@
 
             <EditText
                 android:id="@+id/expenditureET"
-                android:textColor="#DA3287"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" >
+                android:inputType="number"
+                android:textColor="#DA3287" >
 
                 <requestFocus />
             </EditText>
@@ -182,7 +182,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.75"
-                android:src="@drawable/downarrow"
+                android:src="@drawable/down2"
                 android:visibility="invisible" />
 
             <Button
@@ -193,12 +193,12 @@
                 android:text="Save Data"
                 android:textColor="@android:color/holo_red_light" />
 
-            <ImageView
+           <ImageView
                 android:id="@+id/downIV2"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.75"
-                android:src="@drawable/downarrow"
+                android:src="@drawable/down2"
                 android:visibility="invisible" />
         </LinearLayout>
 
