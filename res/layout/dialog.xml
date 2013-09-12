@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="Title" />
+            android:text="@string/Atitle" />
 
         <EditText
             android:id="@+id/dTitleET"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="Description" />
+            android:text="@string/Ddescription" />
 
         <EditText
             android:id="@+id/dDescriptionET"
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
-            android:text="Select a Category" />
+            android:text="@string/DselectCat" />
 
         <RadioGroup
             android:id="@+id/dRadioGroup"
@@ -51,25 +51,25 @@
                 android:id="@+id/foodRB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Food" />
+                android:text="@string/Dfood" />
 
             <RadioButton
                 android:id="@+id/stayingRB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Staying" />
+                android:text="@string/Dstay" />
 
             <RadioButton
                 android:id="@+id/visitingRB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Visiting" />
+                android:text="@string/Dvisit" />
 
             <RadioButton
                 android:id="@+id/toiletRB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Toilet" />
+                android:text="@string/Dtoilet" />
         </RadioGroup>
     </LinearLayout>
 

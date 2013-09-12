@@ -9,6 +9,7 @@ public class Trip {
 		this.title = title;
 		this.location = location;
 		this.date = date;
+		this.days = days;
 		this.travel = travel;
 		this.totalExp = totalExp;
 	}

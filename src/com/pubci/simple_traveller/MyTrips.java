@@ -31,7 +31,7 @@ public class MyTrips extends Activity implements OnItemClickListener {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, android.R.id.text1,
 				titleList);
-
+		
 		// Assign adapter to ListView
 		listView.setAdapter(adapter);
 
@@ -41,6 +41,7 @@ public class MyTrips extends Activity implements OnItemClickListener {
 
 	}
 
+	// get titles of the routes from the database
 	public String[] getTitles() {
 
 		STDatabase info = new STDatabase(this);
@@ -55,7 +56,7 @@ public class MyTrips extends Activity implements OnItemClickListener {
 
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
+		// context menu for list items when they are clicked
 
 		switch (item.getItemId()) {
 		case R.id.viewOption:

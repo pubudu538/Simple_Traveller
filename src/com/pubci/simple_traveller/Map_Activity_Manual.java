@@ -47,9 +47,9 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	TextView titleMapTV;
 	EditText searchtext;
 
-	ArrayList<Marker> markerList = new ArrayList<Marker>();
-	ArrayList<Marker> savedMarkerList;
-	// ArrayList<Marker> updateMarkerList;
+	ArrayList<Marker> markerList = new ArrayList<Marker>(); // store new markers
+	ArrayList<Marker> savedMarkerList; // store markers taken from DB
+
 	Marker marker;
 	LocationManager locationManager;
 
@@ -77,7 +77,6 @@ public class Map_Activity_Manual extends FragmentActivity implements
 			addLocation.setOnClickListener(this);
 			mMap.setOnInfoWindowClickListener(this);
 			mMap.setOnMarkerDragListener(this);
-			// mMap.
 
 		}
 
@@ -122,10 +121,6 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 	private void setCurrentLocation() {
 
-		// Getting LocationManager object from System Service LOCATION_SERVICE
-		// locationManager = (LocationManager)
-		// getSystemService(LOCATION_SERVICE);
-
 		// Creating a criteria object to retrieve provider
 		Criteria criteria = new Criteria();
 
@@ -141,6 +136,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 	}
 
+	// basic initialization
 	private void initialize() {
 
 		mMap = ((SupportMapFragment) getSupportFragmentManager()
@@ -148,14 +144,15 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 		mMap.setMyLocationEnabled(true); // enable my location layer on the map
 
-		Bundle gotBasket = getIntent().getExtras();
+		Bundle gotBasket = getIntent().getExtras(); // get the trip id
 		trip_id = gotBasket.getInt("trip");
 
 		Bundle gotBaskettype = getIntent().getExtras();
-		mapType = gotBaskettype.getInt("type");
+		mapType = gotBaskettype.getInt("type"); // whether manual or gps
 
 		Bundle gotBasketStatus = getIntent().getExtras();
-		int status = gotBasketStatus.getInt("status");
+		int status = gotBasketStatus.getInt("status"); // whether saved trip
+														// route or not
 		if (status == 1) {
 
 			getMarkers(trip_id);
@@ -179,21 +176,19 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 	}
 
+	// draw stored markers on the map
 	private void getMarkers(int num) {
 
 		STDatabase getMarkerEntries = new STDatabase(Map_Activity_Manual.this);
 		getMarkerEntries.open();
 		savedMarkerList = getMarkerEntries.getPlacesById(num);
-		// updateMarkerList = savedMarkerList;
+
 		getMarkerEntries.close();
 
 		BitmapDescriptor icon = null;
 
 		for (int i = 0; i < savedMarkerList.size(); i++) {
 
-			// mMap.addMarker(new MarkerOptions().position(point)
-			// .icon(icon).title(title).snippet(description)
-			// .draggable(false));
 			LatLng position = new LatLng(savedMarkerList.get(i).getPointLat(),
 					savedMarkerList.get(i).getPointLong());
 
@@ -220,7 +215,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 
-		switch (v.getId()) {
+		switch (v.getId()) { // apply only at the GPS mode to get the location
 		case R.id.addLocationB:
 
 			Location locat = mMap.getMyLocation();
@@ -249,6 +244,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	@Override
 	public void onMapLongClick(final LatLng point) {
 
+		// AleartDialog box to get data from user to store
 		LayoutInflater layoutInflater = LayoutInflater.from(context);
 		View promptView = layoutInflater.inflate(R.layout.dialog, null);
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -286,6 +282,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 						BitmapDescriptor icon = null;
 
+						// Based on the checked item, icon changes with type
 						if (rbFood.isChecked()) {
 							icon = BitmapDescriptorFactory
 									.fromResource(R.drawable.food2);
@@ -309,8 +306,6 @@ public class Map_Activity_Manual extends FragmentActivity implements
 						marker = new Marker(title, description, type,
 								point.latitude, point.longitude);
 						markerList.add(marker);
-
-						// addMarkerToDatabase(marker);
 
 						mMap.addMarker(new MarkerOptions().position(point)
 								.icon(icon).title(title).snippet(description)
@@ -336,6 +331,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 	}
 
+	// adding markers to the database
 	public void addMarkerToDatabase(Marker marker) {
 
 		try {
@@ -398,6 +394,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	public void onInfoWindowClick(
 			final com.google.android.gms.maps.model.Marker marker) {
 
+		// Menu to move and delete a marker on the map
 		LayoutInflater layoutInflater = LayoutInflater.from(context);
 		View promptView = layoutInflater.inflate(R.layout.marker_info, null);
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -412,8 +409,6 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 		markerTitle.setText(marker.getTitle());
 		markerDescription.setText(marker.getSnippet());
-
-		// final com.google.android.gms.maps.model.Marker newMarker=marker;
 
 		alertDialogBuilder.setNegativeButton("Move",
 				new DialogInterface.OnClickListener() {
@@ -451,6 +446,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 
 	}
 
+	// delete marker from the database
 	private void deletePlace(com.google.android.gms.maps.model.Marker marker) {
 
 		STDatabase entry = new STDatabase(Map_Activity_Manual.this);
@@ -460,6 +456,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 		entry.close();
 	}
 
+	// get marker id from the database
 	protected int getMarkerId(com.google.android.gms.maps.model.Marker marker) {
 
 		String title = marker.getTitle();
@@ -476,6 +473,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 		return 9999;
 	}
 
+	// get marker id from the Arraylist
 	public int getSavedMarkerId(com.google.android.gms.maps.model.Marker marker) {
 
 		String title = marker.getTitle();
@@ -496,36 +494,9 @@ public class Map_Activity_Manual extends FragmentActivity implements
 	public void onMarkerDrag(com.google.android.gms.maps.model.Marker marker) {
 		// TODO Auto-generated method stub
 
-		// int markerId = getMarkerId(marker);
-		//
-		// double newLatitude = marker.getPosition().latitude;
-		// double newLongitude = marker.getPosition().longitude;
-		//
-		// if (markerId != 9999) {
-		//
-		// markerList.get(markerId).setMakerLatitude(newLatitude);
-		// markerList.get(markerId).setMakerLongitude(newLongitude);
-		//
-		// } else {
-		//
-		// int savedMarkerId = getSavedMarkerId(marker);
-		//
-		// double oldLatitude = savedMarkerList.get(savedMarkerId)
-		// .getPointLat();
-		// double oldLongitude = savedMarkerList.get(savedMarkerId)
-		// .getPointLong();
-		//
-		// int rowId = getPlaceRowID(oldLatitude, oldLongitude);
-		// // savedMarkerList.get(savedMarkerId).setMakerLatitude(lat);
-		// // savedMarkerList.get(savedMarkerId).setMakerLongitude(longitude);
-		// updatePlaceData(rowId,newLatitude,newLongitude);
-		//
-		// //
-		//
-		// }
-
 	}
 
+	// get row id of the marker
 	public int getPlaceRowID(double lat, double lon) {
 		STDatabase entry = new STDatabase(Map_Activity_Manual.this);
 		entry.open();
@@ -535,6 +506,7 @@ public class Map_Activity_Manual extends FragmentActivity implements
 		return rowId;
 	}
 
+	// update marker in the database
 	public void updatePlaceData(int row, double lat, double lon) {
 		STDatabase entryUpdate = new STDatabase(Map_Activity_Manual.this);
 		entryUpdate.open();
@@ -558,11 +530,6 @@ public class Map_Activity_Manual extends FragmentActivity implements
 			markerList.get(markerId).setMakerLongitude(newLongitude);
 
 		} else {
-
-			// int updateMarkerId = getSavedMarkerId(marker);
-			//
-			// savedMarkerList.get(updateMarkerId).setMakerLatitude(newLatitude);
-			// savedMarkerList.get(updateMarkerId).setMakerLongitude(newLongitude);
 
 			int savedMarkerId = getSavedMarkerId(marker);
 
@@ -589,15 +556,6 @@ public class Map_Activity_Manual extends FragmentActivity implements
 		for (int i = 0; i < markerList.size(); i++) {
 			addMarkerToDatabase(markerList.get(i));
 		}
-
-		// for (int i = 0; i < updateMarkerList.size(); i++) {
-		// String title = savedMarkerList.get(i).getTitle();
-		// String des = savedMarkerList.get(i).getDescription();
-		// int type = savedMarkerList.get(i).getType();
-		// int rowId = getPlaceRowID(title, des, type);
-		// updatePlaceData(rowId, updateMarkerList.get(i).getPointLat(),
-		// updateMarkerList.get(i).getPointLong());
-		// }
 
 	}
 

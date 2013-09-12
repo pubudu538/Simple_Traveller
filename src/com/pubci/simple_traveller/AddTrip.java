@@ -22,6 +22,7 @@ public class AddTrip extends Activity implements OnClickListener {
 	boolean myTripsOn = false;
 	String tripStatus;
 	int tripID;
+	Trip trip;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class AddTrip extends Activity implements OnClickListener {
 		daysET.setTypeface(ft);
 		travelbyET.setTypeface(ft);
 		totalExpET.setTypeface(ft);
-		
+
 		saveUpdateB.setTypeface(font);
 		manualB.setTypeface(font);
 		GpsB.setTypeface(font);
@@ -93,19 +94,21 @@ public class AddTrip extends Activity implements OnClickListener {
 		Bundle gotBasket = getIntent().getExtras();
 		tripStatus = gotBasket.getString("mytrips");
 
-		if (tripStatus.equals("mytripsstatusoff") == false) {
+		if (tripStatus.equals("mytripsstatusoff") == false) { // check for
+																// mytrip status
 			myTripsOn = true;
-			myTripSetting();
+			myTripSetting(); // apply new settings for mytrip status
 		}
 	}
 
+	// Apply only for trips in Mytrips list
 	private void myTripSetting() {
 		// TODO Auto-generated method stub
 
 		addtripHeadingTV.setText("Trip Route");
 		titleET.setText(tripStatus);
 		tripID = getTripId(tripStatus);
-		String[] data = getTripRouteData(tripID);
+		String[] data = getTripRouteData(tripID); // get trip route data
 
 		locationET.setText(data[1]);
 		dateET.setText(data[2]);
@@ -113,6 +116,8 @@ public class AddTrip extends Activity implements OnClickListener {
 		travelbyET.setText(data[4]);
 		totalExpET.setText(data[5]);
 
+		trip = new Trip(tripStatus,data[1],data[2],data[3],data[4],data[5]);
+		
 		setFocus(false);
 
 		manualB.setVisibility(View.VISIBLE);
@@ -125,6 +130,7 @@ public class AddTrip extends Activity implements OnClickListener {
 
 	}
 
+	// get trip route data to show to the user
 	public String[] getTripRouteData(int number) {
 
 		STDatabase db = new STDatabase(AddTrip.this);
@@ -171,10 +177,12 @@ public class AddTrip extends Activity implements OnClickListener {
 					String travel = travelbyET.getText().toString();
 					String expenditure = totalExpET.getText().toString();
 
+					trip = new Trip(title, location, date, days, travel,
+							expenditure);
+
 					STDatabase entry = new STDatabase(AddTrip.this);
 					entry.open();
-					entry.createEntryTripData(title, location, date, days,
-							travel, expenditure);
+					entry.createEntryTripData(trip);
 					entry.close();
 				} catch (Exception e) {
 
@@ -210,16 +218,16 @@ public class AddTrip extends Activity implements OnClickListener {
 				// access the database to update the previously stored data
 				try {
 
-					String location = locationET.getText().toString();
-					String date = dateET.getText().toString();
-					String days = daysET.getText().toString();
-					String travel = travelbyET.getText().toString();
-					String expenditure = totalExpET.getText().toString();
+					trip.setLocation(locationET.getText().toString());
+					trip.setTitle(title);
+					trip.setDate(dateET.getText().toString());
+					trip.setDays(daysET.getText().toString());
+					trip.setTravel(travelbyET.getText().toString());
+					trip.setTotalExp(totalExpET.getText().toString());
 
 					STDatabase updateEntry = new STDatabase(this);
 					updateEntry.open();
-					updateEntry.updateEntryTripData(tripID, title, location,
-							date, days, travel, expenditure);
+					updateEntry.updateEntryTripData(tripID, trip);
 					updateEntry.close();
 
 					if (myTripsOn == true) {
@@ -317,6 +325,7 @@ public class AddTrip extends Activity implements OnClickListener {
 		}
 	}
 
+	// set focus to the view
 	private void setFocus(boolean f) {
 
 		if (f == false) {
@@ -343,6 +352,7 @@ public class AddTrip extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onPause();
 
+		// If the running activity isn't mytrips, then this activity finishes
 		if (myTripsOn == false) {
 			finish();
 		}
@@ -359,7 +369,5 @@ public class AddTrip extends Activity implements OnClickListener {
 
 		return id;
 	}
-	
-	
 
 }

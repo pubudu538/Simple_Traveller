@@ -39,6 +39,7 @@ public class STDatabase {
 	private final Context ourContext;
 	private SQLiteDatabase ourDatabase;
 
+	// Inner class, DB helper
 	private static class DbHelper extends SQLiteOpenHelper {
 
 		public DbHelper(Context context) {
@@ -83,6 +84,7 @@ public class STDatabase {
 		ourContext = c;
 	}
 
+	// open the database to read/write
 	public STDatabase open() throws SQLException {
 		ourHelper = new DbHelper(ourContext);
 		ourDatabase = ourHelper.getWritableDatabase();
@@ -90,25 +92,27 @@ public class STDatabase {
 		return this;
 	}
 
+	// close the database after read/write
 	public void close() {
 		ourHelper.close();
 	}
 
-	public long createEntryTripData(String title, String location, String date,
-			String days, String travel, String expenditure) {
+	// insert trip data on the database TripData
+	public long createEntryTripData(Trip trip) {
 
 		ContentValues cv = new ContentValues();
-		cv.put(KEY_T_TITLE, title);
-		cv.put(KEY_T_LOCATION, location);
-		cv.put(KEY_T_DATE, date);
-		cv.put(KEY_T_DAYS, days);
-		cv.put(KEY_T_TRAVELBY, travel);
-		cv.put(KEY_T_EXPENDITURE, expenditure);
+		cv.put(KEY_T_TITLE, trip.getTitle());
+		cv.put(KEY_T_LOCATION, trip.getLocation());
+		cv.put(KEY_T_DATE, trip.getDate());
+		cv.put(KEY_T_DAYS, trip.getDays());
+		cv.put(KEY_T_TRAVELBY, trip.getTravel());
+		cv.put(KEY_T_EXPENDITURE, trip.getTotalExp());
 
 		return ourDatabase.insert(DATABASE_TABLE_TRIP, null, cv);
 
 	}
 
+	// insert marker data to the database Places
 	public long createEntryPlaces(int tripId, String title, String description,
 			int type, String latitude, String longitude) {
 
@@ -124,6 +128,7 @@ public class STDatabase {
 
 	}
 
+	// get data of the trips completely
 	public String getDataofTrips() throws SQLException {
 
 		String[] columns = new String[] { KEY_T_ROWID, KEY_T_TITLE,
@@ -157,6 +162,7 @@ public class STDatabase {
 		return null;
 	}
 
+	// get data of the places completely
 	public String getDataofPlaces() throws SQLException {
 
 		String[] columns = new String[] { KEY_P_ROWID, KEY_P_TRIP_ID,
@@ -190,6 +196,7 @@ public class STDatabase {
 		return null;
 	}
 
+	// check for availability of the title
 	public boolean checkTitleAvailability(String s) {
 
 		String[] columns = new String[] { KEY_T_ROWID, KEY_T_TITLE,
@@ -208,29 +215,22 @@ public class STDatabase {
 
 	}
 
-	public void updateEntryTripData(int id, String title, String location,
-			String date, String days, String travel, String expenditure)
-			throws SQLException {
-
-		// Cursor c = ourDatabase.rawQuery("SELECT * FROM " +
-		// DATABASE_TABLE_TRIP,
-		// null);
-		// c.moveToLast();
-
-		// int rows = Integer.parseInt(c.getString(0));
+	// update trip data entry in the database
+	public void updateEntryTripData(int id, Trip trip) throws SQLException {
 
 		ContentValues cvUpdate = new ContentValues();
-		cvUpdate.put(KEY_T_TITLE, title);
-		cvUpdate.put(KEY_T_LOCATION, location);
-		cvUpdate.put(KEY_T_DATE, date);
-		cvUpdate.put(KEY_T_DAYS, days);
-		cvUpdate.put(KEY_T_TRAVELBY, travel);
-		cvUpdate.put(KEY_T_EXPENDITURE, expenditure);
+		cvUpdate.put(KEY_T_TITLE, trip.getTitle());
+		cvUpdate.put(KEY_T_LOCATION, trip.getLocation());
+		cvUpdate.put(KEY_T_DATE, trip.getDate());
+		cvUpdate.put(KEY_T_DAYS, trip.getDays());
+		cvUpdate.put(KEY_T_TRAVELBY, trip.getTravel());
+		cvUpdate.put(KEY_T_EXPENDITURE, trip.getTotalExp());
 		ourDatabase.update(DATABASE_TABLE_TRIP, cvUpdate, KEY_T_ROWID + "="
 				+ id, null);
 
 	}
 
+	// update places data entry in the database
 	public void updatePlaceData(int id, double lat, double lon)
 			throws SQLException {
 
@@ -244,6 +244,7 @@ public class STDatabase {
 
 	}
 
+	// get the places rowid from the db
 	public int getPlacesRowID(double latitude, double longitude)
 			throws SQLException {
 
@@ -262,11 +263,12 @@ public class STDatabase {
 
 			return row;
 		}
-		
+
 		return 0;
 
 	}
 
+	// get trip id from the db
 	public int getTripId(String title) throws SQLException {
 
 		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_T_ROWID + " FROM "
@@ -286,6 +288,7 @@ public class STDatabase {
 
 	}
 
+	// get only the data of a trip route completely as a string array
 	public String[] getTripInfoByID(int num) throws SQLException {
 
 		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_T_TITLE + ","
@@ -324,6 +327,7 @@ public class STDatabase {
 		return null;
 	}
 
+	// get only the place from the id
 	public ArrayList<Marker> getPlacesById(int num) throws SQLException {
 
 		ArrayList<Marker> markers = new ArrayList<Marker>();
@@ -366,6 +370,7 @@ public class STDatabase {
 
 	}
 
+	// delete place entry from the db
 	public void deletePlaceEntry(double latitude, double longitude) {
 
 		// ourDatabase.delete(DATABASE_TABLE_TRIP, KEY_T_TITLE + "=", null);
@@ -378,6 +383,7 @@ public class STDatabase {
 						lat, lon });
 	}
 
+	// delete trip entry from the db
 	public void deleteTripEntry(String title) {
 
 		ourDatabase.delete(DATABASE_TABLE_TRIP, KEY_T_TITLE + "=?",
@@ -385,6 +391,7 @@ public class STDatabase {
 
 	}
 
+	// get all the titles from the db
 	public String getTitles() throws SQLException {
 
 		Cursor c = ourDatabase.rawQuery("SELECT " + KEY_P_TITLE + " FROM "

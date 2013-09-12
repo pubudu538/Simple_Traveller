@@ -8,5 +8,26 @@
     <string name="mytrips">My Trips</string>
     <string name="searchfortrips">Search for Trips</string>
     <string name="uploadData">Upload Data</string>
+    
+    <string name="Atitle">Title</string>
+    <string name="Alocation">Main Location</string>
+    <string name="Adate">Date of the Trip</string>
+    <string name="Adays">Days Spend</string>
+    <string name="Atravel">Travelling By</string>
+    <string name="Atotal">Total Expenditure</string>
+    <string name="Asavedata">Save Data</string>
+    <string name="Aaddplaces">Add Places</string>
+    <string name="Amanual">Manually</string>
+    <string name="Agps">Using GPS</string>
+    <string name="AhintDate">01&#8211;09&#8211;2013</string>
+    <string name="AhintTravel">Car,Bus,Train,..</string>
+    
+    <string name="Ddescription">Description</string>
+    <string name="DselectCat">Select a Category</string>
+    <string name="Dfood">Food</string>
+    <string name="Dstay">Staying</string>
+     <string name="Dvisit">Visiting</string>
+    <string name="Dtoilet">Toilet</string>
+    
 
 </resources>

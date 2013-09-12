@@ -29,7 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
-                android:text="Title"
+                android:text="@string/Atitle"
                 android:textColor="#0000FF" />
 
             <EditText
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
-                android:text="Main Location"
+                android:text="@string/Alocation"
                 android:textColor="#0000FF" />
 
             <EditText
@@ -63,8 +63,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:textColor="#DA3287" >
-
-                <requestFocus />
             </EditText>
         </LinearLayout>
 
@@ -79,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
-                android:text="Date of the Trip"
+                android:text="@string/Adate"
                 android:textColor="#0000FF" />
 
             <EditText
@@ -87,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="01-12-2013"
+                android:hint="@string/AhintDate"
                 android:inputType="date"
                 android:textColor="#DA3287" />
         </LinearLayout>
@@ -103,7 +101,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
-                android:text="Days Spend"
+                android:text="@string/Adays"
                 android:textColor="#0000FF" />
 
             <EditText
@@ -113,8 +111,6 @@
                 android:ems="10"
                 android:inputType="number"
                 android:textColor="#DA3287" >
-
-                <requestFocus />
             </EditText>
         </LinearLayout>
 
@@ -129,7 +125,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
-                android:text="Travelling By"
+                android:text="@string/Atravel"
                 android:textColor="#0000FF" />
 
             <EditText
@@ -137,10 +133,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Car,Bus,Train.."
+                android:hint="@string/AhintTravel"
                 android:textColor="#DA3287" >
-
-                <requestFocus />
             </EditText>
         </LinearLayout>
 
@@ -155,7 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="20dp"
-                android:text="Total Expenditure"
+                android:text="@string/Atotal"
                 android:textColor="#0000FF" />
 
             <EditText
@@ -165,8 +159,6 @@
                 android:ems="10"
                 android:inputType="number"
                 android:textColor="#DA3287" >
-
-                <requestFocus />
             </EditText>
         </LinearLayout>
 
@@ -190,10 +182,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="150dp"
-                android:text="Save Data"
+                android:text="@string/Asavedata"
                 android:textColor="@android:color/holo_red_light" />
 
-           <ImageView
+            <ImageView
                 android:id="@+id/downIV2"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
@@ -213,7 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="10dp"
-                android:text="Add Places"
+                android:text="@string/Aaddplaces"
                 android:textColor="#0000FF"
                 android:visibility="invisible" />
 
@@ -221,7 +213,7 @@
                 android:id="@+id/manualB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Manually"
+                android:text="@string/Amanual"
                 android:textColor="@android:color/holo_red_light"
                 android:visibility="invisible" />
 
@@ -229,7 +221,7 @@
                 android:id="@+id/GpsB"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Using GPS"
+                android:text="@string/Agps"
                 android:textColor="@android:color/holo_red_light"
                 android:visibility="invisible" />
         </LinearLayout>
