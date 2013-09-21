@@ -16,7 +16,7 @@ public class Splash extends Activity{
 			public void run(){
 				
 				try{
-					sleep(4000);        // splash activity time
+					sleep(500);        // splash activity time 4000
 				}catch(InterruptedException e){
 					
 						e.printStackTrace();

@@ -1,5 +1,15 @@
 package com.pubci.simple_traveller;
 
+import java.io.IOException;
+
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.pubci.simple_traveller.placeinendpoint.Placeinendpoint;
+import com.pubci.simple_traveller.placeinendpoint.model.PlaceIn;
+import com.pubci.simple_traveller.tripinendpoint.Tripinendpoint;
+import com.pubci.simple_traveller.tripinendpoint.model.TripIn;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -12,18 +22,23 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-	ImageButton addtrip, mytrips, searchtrip;
+	ImageButton addtrip, mytrips, searchtrip, uploadTrip;
 	TextView addtv, mytripstv, searchtv, uploadtv;
 	String classes[] = { "AddTrip", "MyTrips", "SearchTrips" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// new TripInTask().execute();
+		// new PlaceInTask().execute();
+
 		setContentView(R.layout.activity_main);
 		initialize();
 		addtrip.setOnClickListener(this);
 		mytrips.setOnClickListener(this);
 		searchtrip.setOnClickListener(this);
+		uploadTrip.setOnClickListener(this);
 
 	}
 
@@ -35,6 +50,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		addtrip = (ImageButton) (findViewById(R.id.addtripB));
 		mytrips = (ImageButton) (findViewById(R.id.mytripsB));
 		searchtrip = (ImageButton) (findViewById(R.id.searchtripB));
+		uploadTrip = (ImageButton) (findViewById(R.id.uploadB));
 		addtv = (TextView) (findViewById(R.id.addtripTV));
 		mytripstv = (TextView) (findViewById(R.id.mytripsTV));
 		searchtv = (TextView) (findViewById(R.id.searchtripTV));
@@ -89,23 +105,89 @@ public class MainActivity extends Activity implements OnClickListener {
 			break;
 
 		case R.id.searchtripB:
-			// try {
-			// ourClass = Class.forName("com.pubci.simple_travller."
-			// + classes[2]);
-			// Intent ourIntent = new Intent(MainActivity.this, ourClass);
-			// startActivity(ourIntent);
-			//
-			//
-			// } catch (ClassNotFoundException e) {
-			// e.printStackTrace();
-			// }
+			try {
+				ourClass = Class.forName("com.pubci.simple_traveller."
+						+ classes[2]);
+				Intent ourIntent = new Intent(MainActivity.this, ourClass);
+				startActivity(ourIntent);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 
 			// Intent i = new Intent("com.pubci.simple_traveller.SQLVIEW");
 			// startActivity(i);
 			break;
 		case R.id.uploadB:
 
+			Intent ip = new Intent(MainActivity.this, Upload.class);
+			startActivity(ip);
+
 			break;
+		}
+
+	}
+
+	private class TripInTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... arg0) {
+			// TODO Auto-generated method stub
+
+			TripIn tripin = new TripIn();
+
+			tripin.setTitle("app run - title");
+			tripin.setLocation("loc working");
+
+			Tripinendpoint.Builder builder = new Tripinendpoint.Builder(
+					AndroidHttp.newCompatibleTransport(), new JacksonFactory(),
+					null);
+
+			builder = CloudEndpointUtils.updateBuilder(builder);
+
+			Tripinendpoint endpoint = builder.build();
+
+			try {
+				endpoint.insertTripIn(tripin).execute();
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return null;
+		}
+
+	}
+
+	private class PlaceInTask extends AsyncTask<Void, Void, Void> {
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			// TODO Auto-generated method stub
+
+			PlaceIn placein = new PlaceIn();
+
+			Double lat = 9.666666;
+			placein.setTitle("its working");
+			placein.setLatitude(lat);
+
+			Placeinendpoint.Builder builder = new Placeinendpoint.Builder(
+					AndroidHttp.newCompatibleTransport(), new JacksonFactory(),
+					null);
+
+			builder = CloudEndpointUtils.updateBuilder(builder);
+
+			Placeinendpoint endpoint = builder.build();
+
+			try {
+				endpoint.insertPlaceIn(placein).execute();
+				// endpoint.insertCheckIn(checkin).execute();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return null;
 		}
 
 	}
