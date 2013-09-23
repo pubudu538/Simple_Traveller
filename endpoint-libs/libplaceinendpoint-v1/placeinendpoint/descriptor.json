@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/placeinendpoint/v1/20130921163002/java/1.16.0-rc/pubci.com-placeinendpoint-v1-20130921163002-java-1.16.0-rc-sources.jar", 
-      "path": "pubci.com-placeinendpoint-v1-20130921163002-java-1.16.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/placeinendpoint/v1/20130922151041/java/1.16.0-rc/pubci.com-placeinendpoint-v1-20130922151041-java-1.16.0-rc-sources.jar", 
+      "path": "pubci.com-placeinendpoint-v1-20130922151041-java-1.16.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2013-09-21 16:30"
+      "timestamp": "2013-09-22 15:10"
     }, 
     {
-      "path": "pubci.com-placeinendpoint-v1-20130921163002-java-1.16.0-rc.jar.properties", 
+      "path": "pubci.com-placeinendpoint-v1-20130922151041-java-1.16.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -702,5 +702,5 @@
   "packagePath": "simple_traveller", 
   "language_version": "1.16.0-rc", 
   "id": "placeinendpoint:v1", 
-  "revision": 20130921163002
+  "revision": 20130922151041
 }

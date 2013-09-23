@@ -1,13 +1,13 @@
 {
   "files": [
     {
-      "downloadUrl": "/downloads/tripinendpoint/v1/20130921163131/java/1.16.0-rc/pubci.com-tripinendpoint-v1-20130921163131-java-1.16.0-rc-sources.jar", 
-      "path": "pubci.com-tripinendpoint-v1-20130921163131-java-1.16.0-rc-sources.jar", 
+      "downloadUrl": "/downloads/tripinendpoint/v1/20130922151255/java/1.16.0-rc/pubci.com-tripinendpoint-v1-20130922151255-java-1.16.0-rc-sources.jar", 
+      "path": "pubci.com-tripinendpoint-v1-20130922151255-java-1.16.0-rc-sources.jar", 
       "type": "source", 
-      "timestamp": "2013-09-21 16:31"
+      "timestamp": "2013-09-22 15:13"
     }, 
     {
-      "path": "pubci.com-tripinendpoint-v1-20130921163131-java-1.16.0-rc.jar.properties", 
+      "path": "pubci.com-tripinendpoint-v1-20130922151255-java-1.16.0-rc.jar.properties", 
       "type": "android.properties"
     }
   ], 
@@ -702,5 +702,5 @@
   "packagePath": "simple_traveller", 
   "language_version": "1.16.0-rc", 
   "id": "tripinendpoint:v1", 
-  "revision": 20130921163131
+  "revision": 20130922151255
 }

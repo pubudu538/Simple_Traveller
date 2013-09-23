@@ -40,6 +40,7 @@ public class AddTrip extends Activity implements OnClickListener {
 	// setting the custom fonts
 	private void setFont() {
 
+		
 		Typeface font = Typeface.createFromAsset(getAssets(),
 				"fonts/Jandaf.ttf");
 		Typeface ft = Typeface.createFromAsset(getAssets(), "fonts/eras.TTF");

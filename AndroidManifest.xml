@@ -89,6 +89,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.pubci.simple_traveller.MapSearchView"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.pubci.simple_traveller.MAP_ACTIVITY_MANUAL" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.pubci.simple_traveller.TripView"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.pubci.simple_traveller.ADDTRIP" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.pubci.simple_traveller.SearchTrips"
             android:label="@string/app_name" >
             <intent-filter>
