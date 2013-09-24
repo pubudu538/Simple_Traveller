@@ -241,6 +241,10 @@ public class TripView extends Activity implements OnClickListener {
 			dialog.dismiss();
 
 			Intent ip = new Intent(TripView.this, MapSearchView.class);
+			Bundle bPack = new Bundle();
+			bPack.putStringArrayList("mark", markerList);
+			bPack.putString("maptitle", trip.getTitle());
+			ip.putExtras(bPack);
 			startActivity(ip);
 
 		}

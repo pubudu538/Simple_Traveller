@@ -266,6 +266,8 @@ public class SearchRepo extends Fragment implements OnClickListener,
 							} else {
 								have = true;
 							}
+						} else {
+							have = true;
 						}
 
 					}

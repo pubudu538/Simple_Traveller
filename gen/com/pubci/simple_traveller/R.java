@@ -201,22 +201,26 @@ containing a value of this type.
         public static final int route=0x7f02002b;
         public static final int routenew=0x7f02002c;
         public static final int search=0x7f02002d;
-        public static final int stay=0x7f02002e;
-        public static final int toilet=0x7f02002f;
-        public static final int toilet2=0x7f020030;
-        public static final int travel=0x7f020031;
-        public static final int travel1=0x7f020032;
-        public static final int travelworld=0x7f020033;
-        public static final int travelworld2=0x7f020034;
-        public static final int upload=0x7f020035;
-        public static final int uploadbrck=0x7f020036;
-        public static final int visit=0x7f020037;
-        public static final int visit2=0x7f020038;
-        public static final int warning=0x7f020039;
+        public static final int searchrepo=0x7f02002e;
+        public static final int searchrepo1=0x7f02002f;
+        public static final int searchweb1=0x7f020030;
+        public static final int seo3=0x7f020031;
+        public static final int stay=0x7f020032;
+        public static final int toilet=0x7f020033;
+        public static final int toilet2=0x7f020034;
+        public static final int travel=0x7f020035;
+        public static final int travel1=0x7f020036;
+        public static final int travelworld=0x7f020037;
+        public static final int travelworld2=0x7f020038;
+        public static final int upload=0x7f020039;
+        public static final int uploadbrck=0x7f02003a;
+        public static final int visit=0x7f02003b;
+        public static final int visit2=0x7f02003c;
+        public static final int warning=0x7f02003d;
     }
     public static final class id {
         public static final int GpsB=0x7f050021;
-        public static final int action_settings=0x7f05003f;
+        public static final int action_settings=0x7f050043;
         public static final int addLocationB=0x7f05002e;
         public static final int addplacesTV=0x7f05001f;
         public static final int addtripB=0x7f050005;
@@ -232,7 +236,7 @@ containing a value of this type.
         public static final int dateofthetripTV=0x7f050014;
         public static final int daysspendET=0x7f050017;
         public static final int daysspendTV=0x7f050016;
-        public static final int deleteOption=0x7f050041;
+        public static final int deleteOption=0x7f050045;
         public static final int dmarkerDescriptionTV=0x7f050031;
         public static final int dmarkerTitleTV=0x7f050030;
         public static final int downIV1=0x7f05001c;
@@ -262,11 +266,14 @@ containing a value of this type.
         public static final int searchedList=0x7f050037;
         public static final int searchtripB=0x7f050007;
         public static final int searchtripTV=0x7f050008;
+        public static final int searchwebB=0x7f05003b;
+        public static final int searchwebET=0x7f05003a;
+        public static final int searchwebTitle=0x7f050039;
         public static final int stayingRB=0x7f050029;
-        public static final int tableRow1=0x7f050039;
+        public static final int tableRow1=0x7f05003d;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f05003a;
-        public static final int textView2=0x7f05003b;
+        public static final int textView1=0x7f05003e;
+        public static final int textView2=0x7f05003f;
         public static final int titleET=0x7f050011;
         public static final int titleMapTV=0x7f05002d;
         public static final int titleTV=0x7f050010;
@@ -274,13 +281,14 @@ containing a value of this type.
         public static final int topLayout=0x7f05002c;
         public static final int travellingET=0x7f050019;
         public static final int travellingTV=0x7f050018;
-        public static final int tvSQLInfo=0x7f05003c;
+        public static final int tvSQLInfo=0x7f050040;
         public static final int uploadB=0x7f05000b;
-        public static final int uploadButton=0x7f05003d;
-        public static final int uploadList=0x7f05003e;
+        public static final int uploadButton=0x7f050041;
+        public static final int uploadList=0x7f050042;
         public static final int uploadTV=0x7f05000c;
-        public static final int viewOption=0x7f050040;
+        public static final int viewOption=0x7f050044;
         public static final int visitingRB=0x7f05002a;
+        public static final int wvBrowser=0x7f05003c;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

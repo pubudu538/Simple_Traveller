@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
+    android:background="@drawable/seo3"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -16,7 +17,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Search A Place" />
+            android:text="Search A Place"
+            android:textColor="#CC0000" />
     </LinearLayout>
 
     <LinearLayout
@@ -31,7 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="6"
-            android:ems="10" >
+            android:ems="10"
+            android:textColor="#9400D3" >
 
             <requestFocus />
         </EditText>
@@ -41,7 +44,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:text="Search" />
+            android:text="Search"
+            android:textColor="#FF0038" />
     </LinearLayout>
 
     <LinearLayout
@@ -55,13 +59,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:visibility="invisible"
-            android:text="No Search Results Found" />
+            android:text="No Search Results Found"
+            android:textColor="#AA381E"
+            android:visibility="invisible" />
 
         <ListView
             android:id="@+id/searchedList"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            android:isScrollContainer="false" />
     </LinearLayout>
 
 </LinearLayout>
