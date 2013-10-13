@@ -1,5 +1,10 @@
 package com.pubci.simple_traveller;
 
+/* Simple Traveller
+ * @author Pubudu Gunatilaka
+ * @version 1.0
+ *   */
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +21,7 @@ public class Splash extends Activity{
 			public void run(){
 				
 				try{
-					sleep(500);        // splash activity time 4000
+					sleep(5000);        // splash activity time 4000
 				}catch(InterruptedException e){
 					
 						e.printStackTrace();

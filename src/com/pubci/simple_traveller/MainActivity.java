@@ -1,5 +1,10 @@
 package com.pubci.simple_traveller;
 
+/* Simple Traveller
+ * @author Pubudu Gunatilaka
+ * @version 1.0
+ *   */
+
 import java.io.IOException;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;

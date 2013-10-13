@@ -1,5 +1,10 @@
 package com.pubci.simple_traveller;
 
+/* Simple Traveller
+ * @author Pubudu Gunatilaka
+ * @version 1.0
+ *   */
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,6 +61,7 @@ public class Upload extends Activity implements OnClickListener {
 
 	}
 
+	// get the titles for upload
 	public String[] getTitles() {
 
 		STDatabase info = new STDatabase(this);

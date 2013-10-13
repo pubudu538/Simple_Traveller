@@ -1,5 +1,10 @@
 package com.pubci.simple_traveller;
 
+/* Simple Traveller
+ * @author Pubudu Gunatilaka
+ * @version 1.0
+ *   */
+
 import android.app.ActionBar.Tab;
 import android.app.Fragment;
 import android.app.FragmentTransaction;

@@ -1,5 +1,10 @@
 package com.pubci.simple_traveller;
 
+/* Simple Traveller
+ * @author Pubudu Gunatilaka
+ * @version 1.0
+ *   */
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;

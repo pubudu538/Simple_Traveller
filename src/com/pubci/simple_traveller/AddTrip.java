@@ -1,5 +1,10 @@
 package com.pubci.simple_traveller;
 
+/* Simple Traveller
+ * @author Pubudu Gunatilaka
+ * @version 1.0
+ *   */
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -40,7 +45,6 @@ public class AddTrip extends Activity implements OnClickListener {
 	// setting the custom fonts
 	private void setFont() {
 
-		
 		Typeface font = Typeface.createFromAsset(getAssets(),
 				"fonts/Jandaf.ttf");
 		Typeface ft = Typeface.createFromAsset(getAssets(), "fonts/eras.TTF");
@@ -117,8 +121,8 @@ public class AddTrip extends Activity implements OnClickListener {
 		travelbyET.setText(data[4]);
 		totalExpET.setText(data[5]);
 
-		trip = new Trip(tripStatus,data[1],data[2],data[3],data[4],data[5]);
-		
+		trip = new Trip(tripStatus, data[1], data[2], data[3], data[4], data[5]);
+
 		setFocus(false);
 
 		manualB.setVisibility(View.VISIBLE);

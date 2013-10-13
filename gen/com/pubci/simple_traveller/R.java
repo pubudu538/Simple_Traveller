@@ -206,17 +206,18 @@ containing a value of this type.
         public static final int searchweb1=0x7f020030;
         public static final int seo3=0x7f020031;
         public static final int stay=0x7f020032;
-        public static final int toilet=0x7f020033;
-        public static final int toilet2=0x7f020034;
-        public static final int travel=0x7f020035;
-        public static final int travel1=0x7f020036;
-        public static final int travelworld=0x7f020037;
-        public static final int travelworld2=0x7f020038;
-        public static final int upload=0x7f020039;
-        public static final int uploadbrck=0x7f02003a;
-        public static final int visit=0x7f02003b;
-        public static final int visit2=0x7f02003c;
-        public static final int warning=0x7f02003d;
+        public static final int stlogo=0x7f020033;
+        public static final int toilet=0x7f020034;
+        public static final int toilet2=0x7f020035;
+        public static final int travel=0x7f020036;
+        public static final int travel1=0x7f020037;
+        public static final int travelworld=0x7f020038;
+        public static final int travelworld2=0x7f020039;
+        public static final int upload=0x7f02003a;
+        public static final int uploadbrck=0x7f02003b;
+        public static final int visit=0x7f02003c;
+        public static final int visit2=0x7f02003d;
+        public static final int warning=0x7f02003e;
     }
     public static final class id {
         public static final int GpsB=0x7f050021;

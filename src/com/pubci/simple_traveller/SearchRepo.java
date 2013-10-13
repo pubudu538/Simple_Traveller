@@ -1,5 +1,10 @@
 package com.pubci.simple_traveller;
 
+/* Simple Traveller
+ * @author Pubudu Gunatilaka
+ * @version 1.0
+ *   */
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -75,7 +80,7 @@ public class SearchRepo extends Fragment implements OnClickListener,
 
 	@Override
 	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
+		// Search the location from the central repository
 
 		String searchText = searchPlaceET.getText().toString();
 
@@ -160,7 +165,7 @@ public class SearchRepo extends Fragment implements OnClickListener,
 
 			try {
 
-				result = endpoint.listTripIn().execute();
+				result = endpoint.listTripIn().execute(); // get the trip data
 
 				for (int i = 0; i < 20; i++) {
 					publishProgress(5);
@@ -241,6 +246,7 @@ public class SearchRepo extends Fragment implements OnClickListener,
 
 		}
 
+		// create a short list from the data
 		private void getShortList(ArrayList<TripIn> sList) {
 
 			ArrayList<TripIn> newList = new ArrayList<TripIn>();

@@ -1,5 +1,10 @@
 package com.pubci.simple_traveller;
 
+/* Simple Traveller
+ * @author Pubudu Gunatilaka
+ * @version 1.0
+ *   */
+
 import java.util.ArrayList;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -43,7 +48,8 @@ public class MapSearchView extends FragmentActivity implements LocationListener 
 	}
 
 	private void getValues() {
-
+		// get markers of the map
+		
 		for (int i = 0; i < sList.size(); i++) {
 			String[] val = sList.get(i).split("###");
 			Marker markerT = new Marker(val[0], val[1],
@@ -125,6 +131,7 @@ public class MapSearchView extends FragmentActivity implements LocationListener 
 	}
 
 	private void initialize() {
+		// Set map basic details
 
 		Bundle gotB = getIntent().getExtras();
 		sList = gotB.getStringArrayList("mark");
